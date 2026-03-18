@@ -83,7 +83,7 @@ class AppTheme {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.secondary,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -100,9 +100,9 @@ class AppTheme {
     ),
 
     textTheme: const TextTheme(
-      headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      headlineLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-      bodyLarge: TextStyle(fontSize: 16),
+      bodyLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       bodyMedium: TextStyle(fontSize: 14),
     ),
   );

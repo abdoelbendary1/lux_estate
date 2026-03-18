@@ -3,43 +3,40 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
 import 'package:lux_estate/features/auth/data/data_source/auth_remote_data_source.dart';
-import 'package:lux_estate/features/auth/presentation/widgets/login_banner.dart';
-import 'package:lux_estate/features/auth/presentation/widgets/login_form.dart';
+import 'package:lux_estate/features/auth/presentation/widgets/register_form.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-  static get route => MaterialPageRoute(builder: (_) => LoginScreen());
+class RegisterScreen extends StatelessWidget {
+  static get route => MaterialPageRoute(builder: (_) => RegisterScreen());
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   AuthRemoteDataSource authRemoteDataSource = AuthRemoteDataSourceImpl();
-  Future<void> _login(BuildContext context) async {
-    // Implement your login logic here
+  Future<void> _signUp(BuildContext context) async {
     try {
-      final result = await authRemoteDataSource.signIn(
+      final response = await authRemoteDataSource.signUp(
         email: emailController.text,
         password: passwordController.text,
+        fullName: fullNameController.text,
       );
-
-      // if (result.user != null) {
-      //   // Login successful, navigate to home screen
+      // if (response.user == null) {
+      //   throw Exception('Sign-up failed: No user returned');
+      // } else if (response.user != null) {
+      //   // Sign-up successful, navigate to home screen
       //   Navigator.push(context, HomeScreen.route);
-      //   ScaffoldMessenger.of(
-      //     context,
-      //   ).showSnackBar(SnackBar(content: Text('Login successful!')));
-      // } else {
-      //   // Login failed, show error message
-      //   ScaffoldMessenger.of(
-      //     context,
-      //   ).showSnackBar(SnackBar(content: Text('Login failed: ')));
       // }
-    } catch (e) {
-      // Handle login error
+      // Handle successful sign-up
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Login failed: $e')));
+      ).showSnackBar(SnackBar(content: Text('Sign-up successful!')));
+    } catch (e) {
+      // Handle sign-up error
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Sign-up failed: $e')));
     }
-
-    // For example, you can call your authentication API and handle the response
   }
 
   @override
@@ -59,20 +56,17 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LoginBanner(theme: theme),
+                // LoginBanner(theme: theme),
                 AppSizes.spaceS.verticalSpace,
 
                 /// Title
-                LoginForm(
+                SignupForm(
                   theme: theme,
                   emailController: emailController,
                   passwordController: passwordController,
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      // Perform login action
-                      _login(context);
-                    }
-                  },
+                  fullNameController: fullNameController,
+                  confirmPasswordController: confirmPasswordController,
+                  onTap: () => _signUp(context),
                 ),
 
                 AppSizes.spaceL.verticalSpace,

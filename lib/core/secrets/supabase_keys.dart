@@ -1,0 +1,3 @@
+final String supabaseUrl = 'https://kapyyufkzbibcjopxqom.supabase.co';
+final String supabaseAnonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthcHl5dWZremJpYmNqb3B4cW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NDc0NjksImV4cCI6MjA4OTMyMzQ2OX0.PmElJxkIpf07ri43bpl0Eeoug5oOBslY_WFQxXITuQo';
