@@ -3,6 +3,8 @@ part of 'auth_bloc.dart';
 @immutable
 sealed class AuthEvent {}
 
+class AuthCheckRequested extends AuthEvent {} // New event for auto-login
+
 final class UserLoginEvent extends AuthEvent {
   final String email;
   final String password;

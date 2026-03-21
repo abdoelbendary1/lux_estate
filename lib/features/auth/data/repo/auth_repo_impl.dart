@@ -1,4 +1,5 @@
 import 'package:fpdart/src/either.dart';
+import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/error/app_exceptions.dart';
 import 'package:lux_estate/core/error/failuers.dart';
 import 'package:lux_estate/features/auth/data/data_source/auth_remote_data_source.dart';
@@ -6,6 +7,7 @@ import 'package:lux_estate/features/auth/domain/entity/user_entity.dart';
 import 'package:lux_estate/features/auth/domain/repo/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
+@LazySingleton(as: AuthRepository)
 class AuthRepoImpl implements AuthRepository {
   AuthRemoteDataSource authRemoteDataSource;
   AuthRepoImpl(this.authRemoteDataSource);

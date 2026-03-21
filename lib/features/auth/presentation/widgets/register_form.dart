@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
-import 'package:lux_estate/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:lux_estate/core/validators/app_validators.dart';
 import 'package:lux_estate/features/auth/presentation/pages/login_page.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_pass_textfield.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_textfield.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_footer.dart';
-import 'package:lux_estate/features/auth/presentation/widgets/social_button.dart';
 
 class SignupForm extends StatelessWidget {
   SignupForm({
@@ -25,6 +24,10 @@ class SignupForm extends StatelessWidget {
   final TextEditingController confirmPasswordController;
   VoidCallback? onTap;
   final ThemeData theme;
+  final FocusNode fullNameFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode confirmPasswordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +47,10 @@ class SignupForm extends StatelessWidget {
         /// Full Name
         AuthTextField(
           label: 'FULL NAME',
-          hint: 'John Doe',
+          focusNode: fullNameFocusNode,
+          onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
           controller: fullNameController,
+          validator: (value) => AppValidators.nameValidator(value),
         ),
 
         AppSizes.spaceS.verticalSpace,
@@ -53,14 +58,21 @@ class SignupForm extends StatelessWidget {
         /// Email
         AuthTextField(
           label: 'EMAIL ADDRESS',
-          hint: 'name@domain.com',
+          focusNode: emailFocusNode,
           controller: emailController,
+          onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
+          validator: (value) => AppValidators.emailValidator(value),
         ),
 
         AppSizes.spaceS.verticalSpace,
 
         /// Password
-        AppPasswordField(controller: passwordController),
+        AppPasswordField(
+          controller: passwordController,
+          validator: (value) => AppValidators.passwordValidator(value),
+          focusNode: passwordFocusNode,
+          onFieldSubmitted: (_) => confirmPasswordFocusNode.requestFocus(),
+        ),
 
         AppSizes.spaceS.verticalSpace,
 
@@ -68,6 +80,12 @@ class SignupForm extends StatelessWidget {
         AppPasswordField(
           controller: confirmPasswordController,
           label: 'CONFIRM PASSWORD',
+          validator: (value) => AppValidators.confirmPasswordValidator(
+            value,
+            passwordController.text,
+          ),
+          focusNode: confirmPasswordFocusNode,
+          onFieldSubmitted: (p0) => FocusScope.of(context).unfocus(),
         ),
 
         AppSizes.spaceM.verticalSpace,

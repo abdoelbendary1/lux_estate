@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/error/app_exceptions.dart';
 import 'package:lux_estate/features/auth/data/model/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,8 +14,13 @@ abstract class AuthRemoteDataSource {
   Future<UserModel?> getCurrentUser();
 }
 
+@LazySingleton(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  SupabaseClient get _client => Supabase.instance.client;
+  final SupabaseClient _client; // 1. Define as a final field
+
+  // 2. Pass it through the constructor
+  AuthRemoteDataSourceImpl(this._client);
+
   @override
   Future<UserModel> signUp({
     required String email,
@@ -29,7 +35,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.user == null) {
       return throw ServerException('Sign-up failed: No user returned');
     }
-    final user = UserModel.fromJson(response.user!.toJson());
+    var user = UserModel.fromJson(response.user!.toJson());
+    user = user.copyWith(
+      fullName: response.user!.userMetadata?['fullName'] ?? '',
+    );
     return user;
   }
 
@@ -45,7 +54,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.user == null) {
       return throw ServerException('Sign-in failed: No user returned');
     }
-    final user = UserModel.fromJson(response.user!.toJson());
+    var user = UserModel.fromJson(response.user!.toJson());
+    user = user.copyWith(
+      fullName: response.user!.userMetadata?['fullName'] ?? '',
+    );
     return user;
   }
 
@@ -61,7 +73,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return throw ServerException('No current user');
     }
 
-    final user = UserModel.fromJson(session.user.toJson());
+    var user = UserModel.fromJson(session.user.toJson());
+    user = user.copyWith(
+      fullName: session.user.userMetadata?['fullName'] ?? '',
+    );
     return user;
   }
 }

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
+import 'package:lux_estate/core/utils/notify_user.dart';
 import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
 import 'package:lux_estate/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:lux_estate/features/auth/presentation/controller/bloc/auth_bloc.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/register_form.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 class RegisterScreen extends StatelessWidget {
   static get route => MaterialPageRoute(builder: (_) => RegisterScreen());
@@ -13,31 +18,9 @@ class RegisterScreen extends StatelessWidget {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
-  AuthRemoteDataSource authRemoteDataSource = AuthRemoteDataSourceImpl();
-  Future<void> _signUp(BuildContext context) async {
-    try {
-      final response = await authRemoteDataSource.signUp(
-        email: emailController.text,
-        password: passwordController.text,
-        fullName: fullNameController.text,
-      );
-      // if (response.user == null) {
-      //   throw Exception('Sign-up failed: No user returned');
-      // } else if (response.user != null) {
-      //   // Sign-up successful, navigate to home screen
-      //   Navigator.push(context, HomeScreen.route);
-      // }
-      // Handle successful sign-up
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Sign-up successful!')));
-    } catch (e) {
-      // Handle sign-up error
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Sign-up failed: $e')));
-    }
-  }
+  AuthRemoteDataSource authRemoteDataSource = AuthRemoteDataSourceImpl(
+    getIt<SupabaseClient>(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -51,29 +34,55 @@ class RegisterScreen extends StatelessWidget {
             horizontal: AppSizes.paddingL,
             vertical: AppSizes.paddingL,
           ),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // LoginBanner(theme: theme),
-                AppSizes.spaceS.verticalSpace,
+          child: BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthSuccess) {
+                notifyUser(
+                  context,
+                  message: 'Registration successful! Please log in.',
+                  title: 'Success',
+                );
+              } else if (state is AuthFailure) {
+                // Show error message on registration failure
+                notifyUser(context, message: state.message, title: 'Error');
+              }
+            },
+            builder: (context, state) {
+              return Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // LoginBanner(theme: theme),
+                    AppSizes.spaceS.verticalSpace,
 
-                /// Title
-                SignupForm(
-                  theme: theme,
-                  emailController: emailController,
-                  passwordController: passwordController,
-                  fullNameController: fullNameController,
-                  confirmPasswordController: confirmPasswordController,
-                  onTap: () => _signUp(context),
+                    /// Title
+                    SignupForm(
+                      theme: theme,
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      fullNameController: fullNameController,
+                      confirmPasswordController: confirmPasswordController,
+                      onTap: () {
+                        if (formKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                            UserSignUpEvent(
+                              email: emailController.text,
+                              password: passwordController.text,
+                              fullName: fullNameController.text,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+
+                    AppSizes.spaceL.verticalSpace,
+
+                    /// Footer
+                  ],
                 ),
-
-                AppSizes.spaceL.verticalSpace,
-
-                /// Footer
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

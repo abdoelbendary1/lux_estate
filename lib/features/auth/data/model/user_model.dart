@@ -17,7 +17,7 @@ class UserModel extends UserEntity {
     'id': id,
   };
 
-  UserModel copyWith({String? email, String? fullName, int? id}) {
+  UserModel copyWith({String? email, String? fullName, String? id}) {
     return UserModel(
       email: email ?? super.email,
       fullName: fullName ?? super.fullName,

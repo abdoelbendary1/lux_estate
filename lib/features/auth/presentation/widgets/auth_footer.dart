@@ -15,28 +15,27 @@ class AuthFooter extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       children: [
-        Row(
-          children: [
-            const Expanded(child: Divider()),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM),
-              child: Text('OR CONTINUE WITH', style: theme.textTheme.bodySmall),
-            ),
-            const Expanded(child: Divider()),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     const Expanded(child: Divider()),
+        //     Padding(
+        //       padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM),
+        //       child: Text('OR CONTINUE WITH', style: theme.textTheme.bodySmall),
+        //     ),
+        //     const Expanded(child: Divider()),
+        //   ],
+        // ),
 
-        AppSizes.spaceM.verticalSpace,
+        // AppSizes.spaceM.verticalSpace,
 
-        /// Social Buttons
-        Row(
-          children: const [
-            Expanded(child: SocialButton(title: 'Google')),
-            SizedBox(width: 12),
-            Expanded(child: SocialButton(title: 'Apple')),
-          ],
-        ),
-
+        // /// Social Buttons
+        // Row(
+        //   children: const [
+        //     Expanded(child: SocialButton(title: 'Google')),
+        //     SizedBox(width: 12),
+        //     Expanded(child: SocialButton(title: 'Apple')),
+        //   ],
+        // ),
         AppSizes.spaceL.verticalSpace,
 
         /// Create Account

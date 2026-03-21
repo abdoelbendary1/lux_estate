@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 
 class AuthTextField extends StatelessWidget {
   final String label;
-  final String hint;
   final TextEditingController? controller;
-
+  final String? Function(String?)? validator;
+  final FocusNode? focusNode;
+  final void Function(String)? onFieldSubmitted;
   const AuthTextField({
     super.key,
     required this.label,
-    required this.hint,
+    required this.focusNode,
     required this.controller,
+    required this.validator,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -21,14 +25,17 @@ class AuthTextField extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            fontSize: 12.sp,
             color: AppColors.grey, //Theme.of(context).colorScheme.secondary,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 4.h),
         TextFormField(
+          onFieldSubmitted: onFieldSubmitted,
+          focusNode: focusNode,
+          validator: validator,
           controller: controller,
           decoration: InputDecoration(
-            hintText: hint,
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: AppColors.grey, //Theme.of(context).colorScheme.secondary,

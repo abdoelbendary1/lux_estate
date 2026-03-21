@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
+import 'package:lux_estate/core/validators/app_validators.dart';
 import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_pass_textfield.dart';
@@ -19,17 +22,25 @@ class LoginForm extends StatelessWidget {
   final ThemeData theme;
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Welcome back', style: theme.textTheme.headlineLarge),
+        Text(
+          'Welcome back',
+          style: theme.textTheme.headlineLarge!.copyWith(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp,
+          ),
+        ),
         AppSizes.spaceXS.verticalSpace,
         Text(
           'Continue your journey in architectural excellence.',
-          style: theme.textTheme.bodyMedium,
+          style: theme.textTheme.bodyMedium!.copyWith(fontSize: 10.sp),
         ),
 
         AppSizes.spaceL.verticalSpace,
@@ -37,14 +48,21 @@ class LoginForm extends StatelessWidget {
         /// Email
         AuthTextField(
           label: 'EMAIL ADDRESS',
-          hint: 'name@domain.com',
           controller: emailController,
+          validator: (value) => AppValidators.emailValidator(value),
+          focusNode: emailFocusNode,
+          onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
         ),
 
-        AppSizes.spaceS.verticalSpace,
+        AppSizes.spaceL.verticalSpace,
 
         /// Password
-        AppPasswordField(controller: passwordController),
+        AppPasswordField(
+          controller: passwordController,
+          validator: (value) => AppValidators.passwordValidator(value),
+          focusNode: passwordFocusNode,
+          onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+        ),
 
         AppSizes.spaceM.verticalSpace,
 
@@ -58,7 +76,8 @@ class LoginForm extends StatelessWidget {
           title: "New to LuxEstate? ",
           actionTitle: "Create account",
           onTap: () {
-            Navigator.of(context).push(RegisterScreen.route);
+            // ✅ This works regardless of nesting
+            context.pushNamed(AppRoutes.registerName);
           },
         ),
       ],
