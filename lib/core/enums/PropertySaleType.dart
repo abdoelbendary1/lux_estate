@@ -1,0 +1,1 @@
+enum PropertySaleType { forSale, forRent }

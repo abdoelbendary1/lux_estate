@@ -4,7 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
+import 'package:lux_estate/features/Home/presentation/pages/favorites_screen.dart';
 import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/layout_bottom_nav_bar.dart';
+import 'package:lux_estate/features/Home/presentation/pages/messeges_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/search_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/settings_screen.dart';
 import 'package:lux_estate/features/auth/presentation/pages/login_page.dart';
 import 'package:lux_estate/features/auth/presentation/pages/register_page.dart'; // Add your register page path
 
@@ -13,8 +18,11 @@ class AppRouter {
   final SessionCubit sessionCubit;
 
   AppRouter(this.sessionCubit);
-
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>(
+    debugLabel: 'AppRouterNavigatorKey',
+  );
   late final GoRouter router = GoRouter(
+    navigatorKey: _navigatorKey,
     initialLocation: AppRoutes.loginPath, // Start at login by default
     // Re-run redirect logic whenever SessionCubit state changes
     refreshListenable: _GoRouterRefreshStream(sessionCubit.stream),
@@ -33,10 +41,62 @@ class AppRouter {
           ),
         ],
       ),
-      GoRoute(
-        path: AppRoutes.homePath, // Remove leading '/' for GoRoute
-        name: AppRoutes.homeName,
-        builder: (context, state) => HomeScreen(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            LayoutBottomNavBar(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.homePath, // Remove leading '/' for GoRoute
+                name: AppRoutes.homeName,
+                builder: (context, state) => HomeScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes
+                    .searchScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.searchScreenName,
+                builder: (context, state) => SearchScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes
+                    .favoritesScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.favoritesScreenName,
+                builder: (context, state) => FavoritesScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes
+                    .messagesScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.messagesScreenName,
+
+                builder: (context, state) => MessegesScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes
+                    .settingsScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.settingsScreenName,
+
+                builder: (context, state) => SettingsScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
 

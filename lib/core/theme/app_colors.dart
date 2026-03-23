@@ -14,5 +14,5 @@ class AppColors {
   static const Color warning = const Color(0xFFFBBF24);
   static const Color info = const Color(0xFF3B82F6);
 
-  static Color? transparent = Colors.transparent;
+  static const Color transparent = Colors.transparent;
 }

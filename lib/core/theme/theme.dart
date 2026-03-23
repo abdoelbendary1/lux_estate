@@ -6,6 +6,18 @@ class AppTheme {
   static const String arabicFont = 'Alexandria';
 
   static ThemeData lightTheme = ThemeData(
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.grey,
+      selectedColor: AppColors.primary,
+      labelStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+      secondaryLabelStyle: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.backgroundWhite,

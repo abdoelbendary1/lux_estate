@@ -9,10 +9,12 @@ environment:
 
 dependencies:
   bloc_concurrency: ^0.3.0
+  carousel_slider: ^5.1.2
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  flutter_floating_bottom_bar: ^1.4.0
   flutter_native_splash: ^2.4.7
   flutter_screenutil: ^5.9.3
   fpdart: ^1.2.0

@@ -6,6 +6,7 @@ import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/features/auth/domain/entity/user_entity.dart';
 import 'package:lux_estate/features/auth/domain/usecase/current_user.dart';
+import 'package:lux_estate/features/auth/domain/usecase/logout_user.dart';
 import 'package:lux_estate/features/auth/domain/usecase/user_login.dart';
 import 'package:lux_estate/features/auth/domain/usecase/user_sign_up.dart';
 import 'package:meta/meta.dart';
@@ -18,14 +19,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserLogin _userLogin;
   final UserSignUp _userSignUp;
   final CurrentUser _currentUser;
+  final LogoutUser _logoutUser;
 
   AuthBloc({
     required UserLogin userLogin,
     required UserSignUp userSignUp,
     required CurrentUser currentUser,
+    required LogoutUser logoutUser,
   }) : _userLogin = userLogin,
        _userSignUp = userSignUp,
        _currentUser = currentUser,
+       _logoutUser = logoutUser,
        super(AuthInitial()) {
     on<AuthEvent>((_, emit) => emit(AuthLoading()));
     on<UserLoginEvent>(
@@ -74,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     UserLogoutEvent event,
     Emitter<AuthState> emit,
   ) async {
-    await _currentUser.call().then(
+    await _logoutUser.call().then(
       (value) => value.fold(
         (l) => emit(AuthFailure(l.message!)),
         (r) {

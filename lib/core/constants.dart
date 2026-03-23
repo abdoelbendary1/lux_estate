@@ -3,4 +3,12 @@ class AppAssetsPath {
       'assets/images/Main - Splash Screen Layout_ Task-focused (No NavBars).png';
   static const String logo = 'assets/images/Logo Section.png';
   static const String background = 'assets/images/Background.png';
+
+  static String house = 'assets/images/house.png';
+
+  static String villa = 'assets/images/villa.png';
+
+  static String loft = 'assets/images/loft.png';
+
+  static String user = 'assets/images/user.png';
 }

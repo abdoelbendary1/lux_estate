@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/cubits/bottom_navbar/bottom_navbar_cubit.dart';
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/router/app_router.dart';
@@ -28,6 +29,9 @@ void main() async {
           create: (context) => getIt<HomeBloc>(),
           child: Container(),
         ),
+        BlocProvider(
+          create: (context) => getIt<NavbarVisibilityCubit>(),
+        )
       ],
       child: const MyApp(),
     ),

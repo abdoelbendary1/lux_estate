@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/constants.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 

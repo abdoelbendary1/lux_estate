@@ -1,0 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:fpdart/src/either.dart';
+
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
+import 'package:lux_estate/core/error/failuers.dart';
+import 'package:lux_estate/features/Home/data/datasource/home_page_mockup_data_source.dart';
+import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
+import 'package:lux_estate/features/Home/domain/repo/Home_page_repo.dart';
+
+class HomePageRepoImpl implements HomePageRepository {
+  HomePageMockupDataSource mockupDataSource;
+  HomePageRepoImpl({required this.mockupDataSource});
+  @override
+  Future<Either<Failures, List<PropertyUnitEntity>>> getPropertiesByCategory({
+    required PropertyCategories category,
+  }) async {
+    try {
+      final result = await mockupDataSource.getPropertiesByCategory(
+        category: category,
+      );
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+}

@@ -11,6 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:lux_estate/core/cubits/bottom_navbar/bottom_navbar_cubit.dart'
+    as _i290;
 import 'package:lux_estate/core/cubits/obsecure_password/obsecure_password_cubit.dart'
     as _i674;
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart'
@@ -25,6 +27,8 @@ import 'package:lux_estate/features/auth/domain/repo/auth_repository.dart'
     as _i942;
 import 'package:lux_estate/features/auth/domain/usecase/current_user.dart'
     as _i559;
+import 'package:lux_estate/features/auth/domain/usecase/logout_user.dart'
+    as _i534;
 import 'package:lux_estate/features/auth/domain/usecase/user_login.dart'
     as _i545;
 import 'package:lux_estate/features/auth/domain/usecase/user_sign_up.dart'
@@ -43,6 +47,9 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
+    gh.factory<_i290.NavbarVisibilityCubit>(
+      () => _i290.NavbarVisibilityCubit(),
+    );
     gh.factory<_i674.ObsecurePasswordCubit>(
       () => _i674.ObsecurePasswordCubit(),
     );
@@ -57,21 +64,25 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i559.CurrentUser>(
       () => _i559.CurrentUser(gh<_i942.AuthRepository>()),
     );
+    gh.factory<_i534.LogoutUser>(
+      () => _i534.LogoutUser(gh<_i942.AuthRepository>()),
+    );
     gh.factory<_i436.UserSignUp>(
       () => _i436.UserSignUp(gh<_i942.AuthRepository>()),
     );
     gh.factory<_i545.UserLogin>(
       () => _i545.UserLogin(authRepository: gh<_i942.AuthRepository>()),
     );
+    gh.singleton<_i775.SessionCubit>(
+      () => _i775.SessionCubit(gh<_i559.CurrentUser>()),
+    );
     gh.factory<_i321.AuthBloc>(
       () => _i321.AuthBloc(
         userLogin: gh<_i545.UserLogin>(),
         userSignUp: gh<_i436.UserSignUp>(),
         currentUser: gh<_i559.CurrentUser>(),
+        logoutUser: gh<_i534.LogoutUser>(),
       ),
-    );
-    gh.singleton<_i775.SessionCubit>(
-      () => _i775.SessionCubit(gh<_i559.CurrentUser>()),
     );
     gh.singleton<_i1020.AppRouter>(
       () => _i1020.AppRouter(gh<_i775.SessionCubit>()),
