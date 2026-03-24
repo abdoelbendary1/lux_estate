@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:fpdart/src/either.dart';
+import 'package:injectable/injectable.dart';
 
 import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/core/error/failuers.dart';
@@ -7,6 +8,7 @@ import 'package:lux_estate/features/Home/data/datasource/home_page_mockup_data_s
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/domain/repo/Home_page_repo.dart';
 
+@LazySingleton(as: HomePageRepository)
 class HomePageRepoImpl implements HomePageRepository {
   HomePageMockupDataSource mockupDataSource;
   HomePageRepoImpl({required this.mockupDataSource});

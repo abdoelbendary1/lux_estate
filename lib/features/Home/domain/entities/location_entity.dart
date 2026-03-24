@@ -1,7 +1,7 @@
 class LocationEntity {
-  String? location;
+  String? name;
   double? latitude;
   double? longitude;
 
-  LocationEntity({this.location, this.latitude, this.longitude});
+  LocationEntity({this.name, this.latitude, this.longitude});
 }

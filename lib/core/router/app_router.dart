@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
+import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/presentation/pages/favorites_screen.dart';
 import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
 import 'package:lux_estate/features/Home/presentation/pages/layout_bottom_nav_bar.dart';
@@ -11,7 +12,8 @@ import 'package:lux_estate/features/Home/presentation/pages/messeges_screen.dart
 import 'package:lux_estate/features/Home/presentation/pages/search_screen.dart';
 import 'package:lux_estate/features/Home/presentation/pages/settings_screen.dart';
 import 'package:lux_estate/features/auth/presentation/pages/login_page.dart';
-import 'package:lux_estate/features/auth/presentation/pages/register_page.dart'; // Add your register page path
+import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
+import 'package:lux_estate/features/show_unit_details/presentation/pages/unit_details.dart'; // Add your register page path
 
 @singleton
 class AppRouter {
@@ -51,6 +53,15 @@ class AppRouter {
                 path: AppRoutes.homePath, // Remove leading '/' for GoRoute
                 name: AppRoutes.homeName,
                 builder: (context, state) => HomeScreen(),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.detailsScreenPath,
+                    name: AppRoutes.detailsScreenName,
+                    builder: (context, state) => UnitDetailsScreen(
+                      unit: state.extra as PropertyUnitEntity,
+                    ), // Pass the unit details via state.extra
+                  ),
+                ],
               ),
             ],
           ),

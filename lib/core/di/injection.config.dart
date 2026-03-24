@@ -35,6 +35,14 @@ import 'package:lux_estate/features/auth/domain/usecase/user_sign_up.dart'
     as _i436;
 import 'package:lux_estate/features/auth/presentation/controller/bloc/auth_bloc.dart'
     as _i321;
+import 'package:lux_estate/features/Home/data/datasource/home_page_mockup_data_source.dart'
+    as _i272;
+import 'package:lux_estate/features/Home/data/repo_impl/home_page_repo_impl.dart'
+    as _i551;
+import 'package:lux_estate/features/Home/domain/repo/Home_page_repo.dart'
+    as _i499;
+import 'package:lux_estate/features/Home/domain/usecase/getPropertiesByCategory.dart'
+    as _i713;
 import 'package:lux_estate/features/Home/presentation/bloc/home_bloc.dart'
     as _i140;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
@@ -53,10 +61,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i674.ObsecurePasswordCubit>(
       () => _i674.ObsecurePasswordCubit(),
     );
-    gh.factory<_i140.HomeBloc>(() => _i140.HomeBloc());
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
+    gh.lazySingleton<_i272.HomePageMockupDataSource>(
+      () => _i272.HomePageMockupDataSourceImpl(),
+    );
+    gh.lazySingleton<_i499.HomePageRepository>(
+      () => _i551.HomePageRepoImpl(
+        mockupDataSource: gh<_i272.HomePageMockupDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i1010.AuthRemoteDataSource>(
       () => _i1010.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i713.GetUnitsByCategory>(
+      () => _i713.GetUnitsByCategory(gh<_i499.HomePageRepository>()),
     );
     gh.lazySingleton<_i942.AuthRepository>(
       () => _i939.AuthRepoImpl(gh<_i1010.AuthRemoteDataSource>()),
@@ -69,6 +87,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i436.UserSignUp>(
       () => _i436.UserSignUp(gh<_i942.AuthRepository>()),
+    );
+    gh.factory<_i140.HomeBloc>(
+      () => _i140.HomeBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
     );
     gh.factory<_i545.UserLogin>(
       () => _i545.UserLogin(authRepository: gh<_i942.AuthRepository>()),

@@ -7,7 +7,6 @@ import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/router/app_router.dart';
 import 'package:lux_estate/core/secrets/supabase_keys.dart';
 import 'package:lux_estate/core/theme/theme.dart';
-import 'package:lux_estate/features/Home/presentation/bloc/home_bloc.dart';
 import 'package:lux_estate/features/auth/presentation/controller/bloc/auth_bloc.dart';
 import 'package:lux_estate/core/cubits/obsecure_password/obsecure_password_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -25,13 +24,7 @@ void main() async {
           create: (context) => getIt<SessionCubit>()..initializeSession(),
         ),
         BlocProvider(create: (context) => getIt<ObsecurePasswordCubit>()),
-        BlocProvider(
-          create: (context) => getIt<HomeBloc>(),
-          child: Container(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<NavbarVisibilityCubit>(),
-        )
+        BlocProvider(create: (context) => getIt<NavbarVisibilityCubit>()),
       ],
       child: const MyApp(),
     ),

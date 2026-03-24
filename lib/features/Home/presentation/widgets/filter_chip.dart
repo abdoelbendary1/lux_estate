@@ -16,12 +16,15 @@ class AppFilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilterChip(
+      autofocus: true,
+
+      side: BorderSide.none,
       label: Text(displayName),
       selected: isSelected,
 
       // Text Styles (Matches Image)
       labelStyle: TextStyle(
-        fontSize: 10.sp,
+        fontSize: 14.sp,
         fontWeight: FontWeight.w500,
         // White on black, black on grey
         color: isSelected ? AppColors.backgroundWhite : AppColors.primary,
@@ -35,7 +38,7 @@ class AppFilterChip extends StatelessWidget {
       pressElevation: 1, // subtle interaction feel
       // Shape (Full Pill)
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(25.r),
         // Ensures no default chip border is visible
         side: BorderSide(color: AppColors.transparent),
       ),

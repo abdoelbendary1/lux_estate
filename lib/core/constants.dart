@@ -11,4 +11,5 @@ class AppAssetsPath {
   static String loft = 'assets/images/loft.png';
 
   static String user = 'assets/images/user.png';
+  static String noUnitsFound = 'assets/images/no_units_found.jpg';
 }

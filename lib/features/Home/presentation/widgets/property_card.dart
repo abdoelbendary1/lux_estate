@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lux_estate/core/constants.dart';
+import 'package:intl/intl.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
+import 'package:lux_estate/core/utils/property_card/build_unit_image.dart';
+import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 
 class PropertyCard extends StatelessWidget {
-  const PropertyCard({super.key});
+  const PropertyCard({
+    super.key,
+    required this.propertyUnit,
+    this.viewUnitDetails,
+  });
+  final PropertyUnitEntity propertyUnit;
+  final VoidCallback? viewUnitDetails;
 
   @override
   Widget build(BuildContext context) {
+    String formattedPrice = NumberFormat(
+      '#,###',
+    ).format(propertyUnit.price ?? 0);
     return Container(
       // Removed fixed height to let content define size or be driven by Carousel aspectRatio
       decoration: BoxDecoration(
@@ -29,17 +40,12 @@ class PropertyCard extends StatelessWidget {
             // Using Expanded here allows the carousel's height to dictate the image size
             child: Stack(
               children: [
+                //Image with Gradient Overlay and Badges
                 ClipRRect(
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(24.r),
                   ),
-                  child: Image.asset(
-                    AppAssetsPath.house,
-                    height: double.infinity,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.bottomCenter,
-                  ),
+                  child: buildPropertyImage(propertyUnit.imageUrl),
                 ),
                 // Gradient Overlay
                 Positioned.fill(
@@ -61,37 +67,39 @@ class PropertyCard extends StatelessWidget {
                   ),
                 ),
                 // "MATCHED" Badge
-                Positioned(
-                  top: 12.h,
-                  left: 12.w,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 6.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const CircleAvatar(
-                          radius: 3,
-                          backgroundColor: Colors.green,
-                        ),
-                        SizedBox(width: 6.w),
-                        Text(
-                          "MATCHED",
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.bold,
+                propertyUnit.isMatched ?? false
+                    ? Positioned(
+                        top: 12.h,
+                        left: 12.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 6.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const CircleAvatar(
+                                radius: 3,
+                                backgroundColor: Colors.green,
+                              ),
+                              SizedBox(width: 6.w),
+                              Text(
+                                "MATCHED",
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      )
+                    : const SizedBox.shrink(),
                 // Heart Icon
                 Positioned(
                   top: 12.h,
@@ -101,7 +109,9 @@ class PropertyCard extends StatelessWidget {
                     backgroundColor: Colors.white.withOpacity(0.9),
                     child: Icon(
                       Icons.favorite,
-                      color: Colors.black,
+                      color: propertyUnit.isSaved == true
+                          ? Colors.redAccent
+                          : Colors.grey[400],
                       size: 20.sp,
                     ),
                   ),
@@ -115,7 +125,7 @@ class PropertyCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Malibu, California",
+                        propertyUnit.location?.name?.toUpperCase() ?? '',
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 14.sp,
@@ -123,7 +133,7 @@ class PropertyCard extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        "The Glass Pavilion",
+                        propertyUnit.name?.toUpperCase() ?? '',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize:
@@ -135,11 +145,17 @@ class PropertyCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildInfoIcon(Icons.king_bed_outlined, "4"),
-                          _buildInfoIcon(Icons.bathtub_outlined, "3"),
+                          _buildInfoIcon(
+                            Icons.king_bed_outlined,
+                            propertyUnit.bedCount?.toString() ?? '0',
+                          ),
+                          _buildInfoIcon(
+                            Icons.bathtub_outlined,
+                            propertyUnit.bathCount?.toString() ?? '0',
+                          ),
                           _buildInfoIcon(
                             Icons.straighten_outlined,
-                            "3,200 ft²",
+                            propertyUnit.size?.toString() ?? '0',
                           ),
                         ],
                       ),
@@ -169,7 +185,7 @@ class PropertyCard extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      "\$4,250,000",
+                      '\$${formattedPrice}',
                       style: TextStyle(
                         fontSize: 18.sp, // Adjusted to be readable
                         fontWeight: FontWeight.bold,
@@ -178,7 +194,7 @@ class PropertyCard extends StatelessWidget {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: viewUnitDetails,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
