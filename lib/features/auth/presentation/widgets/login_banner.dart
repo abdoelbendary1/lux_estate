@@ -11,72 +11,67 @@ class LoginBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: AlignmentGeometry.bottomCenter,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppSizes.radiusL),
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 30.h), // مساحة للـ badge
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              SizedBox(
-                // color: AppColors.primary.withOpacity(0.1),
-                height: 200.h,
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 30.h),
+        child: Stack(
+          // Allow the badge to overflow the stack boundaries
+          clipBehavior: Clip.none,
+          children: [
+            // 1. Image with fixed Aspect Ratio
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppSizes.radiusL),
+              child: AspectRatio(
+                aspectRatio: 1.2, // Higher number = wider, lower = taller
                 child: Image.asset(
                   AppAssetsPath.background,
-                  // height: 200.h,
                   width: double.infinity,
-                  alignment: AlignmentGeometry.bottomCenter,
-                  fit: BoxFit.scaleDown,
+                  fit: BoxFit.cover, // Cover ensures the box is filled
                 ),
               ),
+            ),
 
-              /// Badge
-              Positioned(
-                bottom: -20.h,
-                right: 15.w,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 6.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(AppSizes.radiusM),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 10,
-                        color: Colors.black.withOpacity(0.5),
+            // 2. Badge positioned relative to the image
+            Positioned(
+              bottom: -15.h, // Adjusted to look consistent
+              right: 15.w,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(AppSizes.radiusM),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 10,
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'EST. 2024',
+                      style: theme.textTheme.bodySmall!.copyWith(
+                        fontSize: 12.sp,
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'EST. 2024',
-                        style: theme.textTheme.bodySmall!.copyWith(
-                          fontSize: 8.sp,
-                        ),
+                    ),
+                    Text(
+                      'CURATED LIVING',
+                      style: theme.textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                        fontSize: 16.sp,
                       ),
-                      Text(
-                        'CURATED LIVING',
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.primary,
-                          fontSize: 10.sp,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-/// Pa

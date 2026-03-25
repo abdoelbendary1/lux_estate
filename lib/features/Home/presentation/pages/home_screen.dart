@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                         SearchSection(
                           enabled: false,
                           onSearchTapped: () =>
-                              context.goNamed(AppRoutes.searchScreenName),
+                              context.pushNamed(AppRoutes.searchScreenName),
                         ),
                         RecommendedSection(),
                         RecentlyAddedSection(),

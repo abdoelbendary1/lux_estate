@@ -31,7 +31,13 @@ class AuthActionButton extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(title),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontSize: 18.sp,
+                      color: AppColors.backgroundWhite,
+                    ),
+                  ),
                   8.horizontalSpace,
 
                   const Icon(Icons.arrow_forward),

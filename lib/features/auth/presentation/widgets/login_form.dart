@@ -34,13 +34,15 @@ class LoginForm extends StatelessWidget {
           'Welcome back',
           style: theme.textTheme.headlineLarge!.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 20.sp,
+            fontSize: AppSizes.fontXXL.sp,
           ),
         ),
         AppSizes.spaceXS.verticalSpace,
         Text(
           'Continue your journey in architectural excellence.',
-          style: theme.textTheme.bodyMedium!.copyWith(fontSize: 10.sp),
+          style: theme.textTheme.bodyMedium!.copyWith(
+            fontSize: AppSizes.fontM.sp,
+          ),
         ),
 
         AppSizes.spaceL.verticalSpace,

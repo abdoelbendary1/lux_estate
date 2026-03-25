@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lux_estate/core/utils/property_card/property_card_shimmer.dart';
 
 Widget buildPropertyImage(String? url) {
   // 1. لو الـ URL فاضي أو نل، اظهر صورة "Default"
@@ -17,7 +18,7 @@ Widget buildPropertyImage(String? url) {
     imageUrl: url,
     placeholder: (context, url) => Container(
       color: Colors.grey[300],
-      child: const Center(child: CircularProgressIndicator()),
+      child: AspectRatio(aspectRatio: 16 / 9, child: PropertyCardShimmer()),
     ),
     // مهم جداً تحط الـ errorWidget دي عشان لو اللينك "مكتوب" بس "مبيفتحش"
     errorWidget: (context, url, error) => Container(

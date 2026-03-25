@@ -22,6 +22,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   FutureOr<void> _search(PerformSearch event, Emitter<SearchState> emit) async {
+    emit(state.copyWith(unitsStatus: DataLoading()));
+    await Future.delayed(const Duration(seconds: 2));
     final result = await _getUnitsByCategory.execute(
       category: PropertyCategories.all,
     );

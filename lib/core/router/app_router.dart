@@ -74,6 +74,8 @@ class AppRouter {
                   GoRoute(
                     path: AppRoutes.searchScreenPath,
                     name: AppRoutes.searchScreenName,
+                    parentNavigatorKey: _navigatorKey,
+
                     builder: (context, state) => BlocProvider(
                       create: (context) => getIt<SearchBloc>(),
                       child: SearchScreen(),

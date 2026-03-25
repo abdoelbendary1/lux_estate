@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
-import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
-import 'package:lux_estate/features/auth/presentation/widgets/social_button.dart';
 
 class AuthFooter extends StatelessWidget {
   const AuthFooter({super.key, this.title, this.onTap, this.actionTitle});
@@ -45,13 +43,14 @@ class AuthFooter extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 text: title ?? 'Don\'t have an account? ',
-                style: theme.textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16.sp),
                 children: [
                   TextSpan(
                     text: actionTitle ?? 'Create account',
                     style: TextStyle(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w600,
+                      fontSize: 16.sp,
                     ),
                   ),
                 ],

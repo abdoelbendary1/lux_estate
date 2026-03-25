@@ -21,10 +21,13 @@ class EmptyPropertiesWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(height: 8.h),
-
+        Spacer(),
         // أيقونة مع خلفية خفيفة
-        Image.asset(AppAssetsPath.noUnitsFound, height: 250.h),
+        Image.asset(
+          AppAssetsPath.noUnitsFound,
+          height: 250.h,
+          fit: BoxFit.cover,
+        ),
         SizedBox(height: 8.h),
         // نص الرسالة
         Text(
@@ -64,6 +67,7 @@ class EmptyPropertiesWidget extends StatelessWidget {
               ),
             ),
           ),
+        Spacer(flex: 2),
       ],
     );
   }

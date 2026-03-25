@@ -123,43 +123,8 @@ class PropertyCard extends StatelessWidget {
                   right: 16.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        propertyUnit.location?.name?.toUpperCase() ?? '',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        propertyUnit.name?.toUpperCase() ?? '',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize:
-                              22.sp, // Adjusted from 28 to be more flexible
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 12.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildInfoIcon(
-                            Icons.king_bed_outlined,
-                            propertyUnit.bedCount?.toString() ?? '0',
-                          ),
-                          _buildInfoIcon(
-                            Icons.bathtub_outlined,
-                            propertyUnit.bathCount?.toString() ?? '0',
-                          ),
-                          _buildInfoIcon(
-                            Icons.straighten_outlined,
-                            propertyUnit.size?.toString() ?? '0',
-                          ),
-                        ],
-                      ),
-                    ],
+                    mainAxisSize: MainAxisSize.min,
+                    children: [_buildStatsRow(propertyUnit)],
                   ),
                 ),
               ],
@@ -171,15 +136,40 @@ class PropertyCard extends StatelessWidget {
             padding: EdgeInsets.all(16.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      propertyUnit.name ?? '',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 22.sp, // Adjusted from 28 to be more flexible
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+                    propertyUnit.location?.name?.toUpperCase() != null
+                        ? Text(
+                            propertyUnit.location?.name?.toUpperCase() ?? '',
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 14.sp,
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                    propertyUnit.location?.name?.toUpperCase() != null
+                        ? SizedBox(height: 4.h)
+                        : const SizedBox.shrink(),
+
                     Text(
                       "INVESTMENT PRICE",
                       style: TextStyle(
                         color: Colors.grey,
-                        fontSize: 10.sp,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -187,10 +177,11 @@ class PropertyCard extends StatelessWidget {
                     Text(
                       '\$${formattedPrice}',
                       style: TextStyle(
-                        fontSize: 18.sp, // Adjusted to be readable
+                        fontSize: 22.sp, // Adjusted to be readable
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(height: 2.h),
                   ],
                 ),
                 ElevatedButton(
@@ -208,7 +199,7 @@ class PropertyCard extends StatelessWidget {
                   child: Text(
                     "View Detail",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -221,16 +212,87 @@ class PropertyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoIcon(IconData icon, String text) {
+  // Widget _buildInfoIcon(IconData icon, String text) {
+  //   return Row(
+  //     children: [
+  //       Icon(icon, color: Colors.white, size: 22.sp),
+  //       SizedBox(width: 4.w),
+  //       Text(
+  //         text,
+  //         style: TextStyle(color: Colors.white, fontSize: 20.sp),
+  //       ),
+  //     ],
+  //   );
+  // }
+  int convertFromSqFtToSqMeters(double sqFt) {
+    double sqMeters = sqFt * 0.0929;
+    return sqMeters.toInt();
+  }
+
+  Widget _buildStatsRow(PropertyUnitEntity unit) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Icon(icon, color: Colors.white, size: 16.sp),
-        SizedBox(width: 4.w),
-        Text(
-          text,
-          style: TextStyle(color: Colors.white, fontSize: 13.sp),
+        _buildStatCard(
+          title: 'METERS SQ.',
+          value: convertFromSqFtToSqMeters(
+            unit.size?.toDouble() ?? 0.0,
+          ).toString(),
+        ),
+        Spacer(),
+        _buildStatCard(
+          title: 'BEDS',
+          value: unit.bedCount?.toInt().toString() ?? "N/A",
+        ),
+        Spacer(),
+
+        _buildStatCard(
+          title: 'BATHROOMS',
+          value: unit.bathCount?.toInt().toString() ?? "N/A",
         ),
       ],
     );
   }
+
+  Widget _buildStatCard({required String title, required String value}) =>
+      Expanded(
+        flex: 20,
+        child: Container(
+          width: 100.w,
+          height: 110.h,
+          padding: EdgeInsets.all(16.r),
+          decoration: BoxDecoration(
+            color: AppColors.accentBlue.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: AppColors.textWhite,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 40.sp,
+                    color: AppColors.textWhite,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 }
