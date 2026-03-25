@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
@@ -36,7 +37,7 @@ class UnitDetailsScreen extends StatelessWidget {
                     children: [
                       _buildIconButton(
                         Icons.arrow_back,
-                        onTap: () => Navigator.pop(context),
+                        onTap: () => context.pop(),
                       ),
                       Row(
                         children: [
@@ -99,14 +100,10 @@ class UnitDetailsScreen extends StatelessWidget {
                   SizedBox(height: 12.h),
                   _buildMapWidget(),
                   // Add extra padding at the bottom so content isn't covered by bottom nav
-                  SizedBox(height: 100.h),
                 ],
               ),
             ),
           ),
-
-          // 9. Static Bottom Navigation Bar (Message & Call Icons)
-          _buildStaticBottomNav(context),
         ],
       ),
     );

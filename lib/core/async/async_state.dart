@@ -7,6 +7,10 @@ abstract class AsyncState<T> {
   const AsyncState({this.data, this.errorMessage, this.isLoading = false});
 }
 
+class DataInitial extends AsyncState<Never> {
+  const DataInitial() : super(isLoading: false);
+}
+
 // Concrete implementations that look the same everywhere
 class DataLoading extends AsyncState<Never> {
   const DataLoading() : super(isLoading: true);

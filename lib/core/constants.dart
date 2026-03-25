@@ -12,4 +12,6 @@ class AppAssetsPath {
 
   static String user = 'assets/images/user.png';
   static String noUnitsFound = 'assets/images/no_units_found.jpg';
+
+  static String searchPlaceHolder = 'assets/images/search_placeholder.jpg';
 }

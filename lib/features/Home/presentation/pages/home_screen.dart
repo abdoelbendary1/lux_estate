@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/di/injection.dart';
+import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/features/Home/presentation/bloc/home_bloc.dart';
 import 'package:lux_estate/features/Home/presentation/widgets/home_appbar.dart';
 import 'package:lux_estate/features/Home/presentation/widgets/recently_added.dart';
 import 'package:lux_estate/features/Home/presentation/widgets/recommended_swipe_card.dart';
-import 'package:lux_estate/features/Home/presentation/widgets/search_section.dart';
+import 'package:lux_estate/features/Home/presentation/widgets/search_appbar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -36,7 +38,11 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         HomeAppBar(user: user),
-                        SearchSection(),
+                        SearchSection(
+                          enabled: false,
+                          onSearchTapped: () =>
+                              context.goNamed(AppRoutes.searchScreenName),
+                        ),
                         RecommendedSection(),
                         RecentlyAddedSection(),
                         // CallSupportCard(),

@@ -8,7 +8,9 @@ class AppRoutes {
   static const String messagesScreenName = 'messages';
   static const String detailsScreenName = 'details';
   static const String searchScreenName = 'search';
-  static  const String favoritesScreenName = 'favorites';
+  static const String exploreScreenName = 'explore';
+
+  static const String favoritesScreenName = 'favorites';
 
   // Paths (Use these for GoRoute path and redirects)
   static const String loginPath = '/login';
@@ -19,5 +21,6 @@ class AppRoutes {
   static const String messagesScreenPath = '/messages';
   static const String detailsScreenPath = '/details';
   static const String searchScreenPath = '/search';
+  static const String exploreScreenPath = '/explore';
   static const String favoritesScreenPath = '/favorites';
 }

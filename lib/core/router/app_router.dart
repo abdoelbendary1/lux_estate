@@ -1,19 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
+import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/presentation/pages/favorites_screen.dart';
 import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
 import 'package:lux_estate/features/Home/presentation/pages/layout_bottom_nav_bar.dart';
 import 'package:lux_estate/features/Home/presentation/pages/messeges_screen.dart';
-import 'package:lux_estate/features/Home/presentation/pages/search_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/explore_screen.dart';
 import 'package:lux_estate/features/Home/presentation/pages/settings_screen.dart';
 import 'package:lux_estate/features/auth/presentation/pages/login_page.dart';
 import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
-import 'package:lux_estate/features/show_unit_details/presentation/pages/unit_details.dart'; // Add your register page path
+import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart';
+import 'package:lux_estate/features/search/presentation/pages/search_screen.dart';
+import 'package:lux_estate/features/show_unit_details/presentation/pages/unit_details.dart';
 
 @singleton
 class AppRouter {
@@ -57,9 +61,23 @@ class AppRouter {
                   GoRoute(
                     path: AppRoutes.detailsScreenPath,
                     name: AppRoutes.detailsScreenName,
+                    parentNavigatorKey: _navigatorKey,
+
+                    ///By setting parentNavigatorKey: _navigatorKey,
+                    ///you are telling the router:
+                    ///"Even though this route is defined inside the Home branch, don't render it inside the Shell.
+                    ///Render it on the absolute root of the app."
                     builder: (context, state) => UnitDetailsScreen(
                       unit: state.extra as PropertyUnitEntity,
                     ), // Pass the unit details via state.extra
+                  ),
+                  GoRoute(
+                    path: AppRoutes.searchScreenPath,
+                    name: AppRoutes.searchScreenName,
+                    builder: (context, state) => BlocProvider(
+                      create: (context) => getIt<SearchBloc>(),
+                      child: SearchScreen(),
+                    ),
                   ),
                 ],
               ),
@@ -69,9 +87,9 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRoutes
-                    .searchScreenPath, // Remove leading '/' for GoRoute
-                name: AppRoutes.searchScreenName,
-                builder: (context, state) => SearchScreen(),
+                    .exploreScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.exploreScreenName,
+                builder: (context, state) => ExploreScreen(),
               ),
             ],
           ),
@@ -117,7 +135,8 @@ class AppRouter {
       // Determine if user is currently trying to access auth pages
       final bool isLoggingIn = state.matchedLocation == AppRoutes.loginPath;
       final bool isRegistering =
-          state.matchedLocation == '/login/register'; // Full path
+          state.matchedLocation ==
+          "${AppRoutes.loginPath}/${AppRoutes.registerPath}";
       final bool isAuthPage = isLoggingIn || isRegistering;
       // 1. If still checking (Initial), stay on current screen or show splash
       if (sessionState is SessionInitial) return null;

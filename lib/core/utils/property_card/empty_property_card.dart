@@ -18,55 +18,53 @@ class EmptyPropertiesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 8.h),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(height: 8.h),
 
-          // أيقونة مع خلفية خفيفة
-          Image.asset(AppAssetsPath.noUnitsFound, height: 250.h),
-          SizedBox(height: 8.h),
-          // نص الرسالة
-          Text(
-            message,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+        // أيقونة مع خلفية خفيفة
+        Image.asset(AppAssetsPath.noUnitsFound, height: 250.h),
+        SizedBox(height: 8.h),
+        // نص الرسالة
+        Text(
+          message,
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
           ),
+        ),
 
-          SizedBox(height: 32.h),
-          // زرار لإعادة المحاولة أو مسح الفلاتر
-          if (onRefresh != null)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingL.w),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: onRefresh,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    elevation: 0,
+        SizedBox(height: 32.h),
+        // زرار لإعادة المحاولة أو مسح الفلاتر
+        if (onRefresh != null)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingL.w),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: onRefresh,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.r),
                   ),
-                  child: Text(
-                    actionText,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  elevation: 0,
+                ),
+                child: Text(
+                  actionText,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

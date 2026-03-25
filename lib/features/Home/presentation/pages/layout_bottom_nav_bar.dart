@@ -17,6 +17,7 @@ class LayoutBottomNavBar extends StatelessWidget {
     return BlocBuilder<NavbarVisibilityCubit, bool>(
       builder: (context, state) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           extendBody: true,
           body: NotificationListener<ScrollNotification>(
             onNotification: (notification) {

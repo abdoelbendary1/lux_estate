@@ -6,8 +6,8 @@ class AsyncViewBuilder<T> extends StatelessWidget {
   final AsyncState<T> state;
   final Widget Function(T data) onSuccess;
   final Widget? loadingWidget;
-  final Widget? onEmpty; // Optional widget for empty data states
-
+  final Widget? onEmpty; 
+  final Widget? initialWidget; // Fixed typo from 'initalWidget'
   final VoidCallback onRetry;
 
   const AsyncViewBuilder({
@@ -15,29 +15,41 @@ class AsyncViewBuilder<T> extends StatelessWidget {
     required this.onSuccess,
     required this.onRetry,
     this.loadingWidget,
+    this.initialWidget,
     this.onEmpty,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (state.isLoading) {
-      return loadingWidget ?? const Center(child: CircularProgressIndicator());
+    // Using the power of Dart 3 pattern matching
+    return switch (state) {
+      DataInitial() => initialWidget ?? const SizedBox.shrink(),
+      
+      DataLoading() => loadingWidget ?? 
+          const Center(child: CircularProgressIndicator()),
+      
+      DataFailed(errorMessage: var message) => ErrorDisplay(
+          message: message ?? "An unexpected error occurred",
+          onRetry: onRetry,
+        ),
+      
+      DataSuccess(data: var data) => _buildSuccess(data),
+      
+      _ => const SizedBox.shrink(),
+    };
+  }
+
+  Widget _buildSuccess(T? data) {
+    if (data == null) {
+      return onEmpty ?? const Center(child: Text('No data available.'));
     }
 
-    if (state.errorMessage != null) {
-      return ErrorDisplay(
-        message: state.errorMessage!,
-        onRetry: onRetry, // The 'Retry' behavior is now identical everywhere
-      );
+    // Safety check: only check .isEmpty if the data is actually a List
+    if (data is Iterable && data.isEmpty) {
+      return onEmpty ?? const Center(child: Text('No data available.'));
     }
 
-    if ((state.data as List).isEmpty) {
-      return onEmpty ?? const Center(child: Text('No data available.'));
-    } else if (state.data == null) {
-      return onEmpty ?? const Center(child: Text('No data available.'));
-    } else {
-      return onSuccess(state.data as T);
-    }
+    return onSuccess(data);
   }
 }

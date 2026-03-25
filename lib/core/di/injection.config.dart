@@ -45,6 +45,8 @@ import 'package:lux_estate/features/Home/domain/usecase/getPropertiesByCategory.
     as _i713;
 import 'package:lux_estate/features/Home/presentation/bloc/home_bloc.dart'
     as _i140;
+import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart'
+    as _i647;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -90,6 +92,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i140.HomeBloc>(
       () => _i140.HomeBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
+    );
+    gh.factory<_i647.SearchBloc>(
+      () =>
+          _i647.SearchBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
     );
     gh.factory<_i545.UserLogin>(
       () => _i545.UserLogin(authRepository: gh<_i942.AuthRepository>()),

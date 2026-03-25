@@ -121,7 +121,7 @@ class LoadedCards extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 8.w),
             child: PropertyCard(
               propertyUnit: units[index],
-              viewUnitDetails: () => context.goNamed(
+              viewUnitDetails: () => context.pushNamed(
                 AppRoutes.detailsScreenName,
                 extra: units[index],
               ),
