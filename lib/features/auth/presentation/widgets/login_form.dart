@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/core/validators/app_validators.dart';
-import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_pass_textfield.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/auth_textfield.dart';

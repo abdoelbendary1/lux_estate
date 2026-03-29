@@ -1,7 +1,7 @@
 enum PropertyCategories {
-  villa(id: '1', displayName: "Villas"),
-  apartment(id: '2', displayName: "Aprtments"),
-  houses(id: '3', displayName: "Houses"),
+  villa(id: '1', displayName: "Villa"),
+  apartment(id: '2', displayName: "Apartment"),
+  houses(id: '3', displayName: "House"),
   office(id: '4', displayName: "Office"),
   shop(id: '5', displayName: "Shop"),
   garage(id: '6', displayName: "Garage"),

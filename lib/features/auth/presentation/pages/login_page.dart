@@ -5,14 +5,14 @@ import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/enums/notify_user_enum.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/core/utils/notify_user.dart';
-import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/explore.dart';
 import 'package:lux_estate/features/auth/presentation/controller/bloc/auth_bloc.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/login_banner.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  static get route => MaterialPageRoute(builder: (_) => LoginScreen());
+  static MaterialPageRoute<dynamic> get route => MaterialPageRoute(builder: (_) => LoginScreen());
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 

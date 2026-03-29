@@ -41,10 +41,20 @@ import 'package:lux_estate/features/Home/data/repo_impl/home_page_repo_impl.dart
     as _i551;
 import 'package:lux_estate/features/Home/domain/repo/Home_page_repo.dart'
     as _i499;
+import 'package:lux_estate/features/Home/domain/usecase/GetNearbyUntits.dart'
+    as _i250;
 import 'package:lux_estate/features/Home/domain/usecase/getPropertiesByCategory.dart'
     as _i713;
-import 'package:lux_estate/features/Home/presentation/bloc/home_bloc.dart'
-    as _i140;
+import 'package:lux_estate/features/Home/domain/usecase/GetRecentUnits.dart'
+    as _i508;
+import 'package:lux_estate/features/Home/presentation/bloc/nearbyUnits/nearby_units_bloc.dart'
+    as _i921;
+import 'package:lux_estate/features/Home/presentation/bloc/recentlyAdded/recently_added_units_bloc.dart'
+    as _i992;
+import 'package:lux_estate/features/Home/presentation/bloc/recomended_units/recommended_units_bloc.dart'
+    as _i590;
+import 'package:lux_estate/features/search/presentation/bloc/filter/filter_cubit.dart'
+    as _i320;
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart'
     as _i647;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
@@ -63,6 +73,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i674.ObsecurePasswordCubit>(
       () => _i674.ObsecurePasswordCubit(),
     );
+    gh.factory<_i320.FilterBloc>(() => _i320.FilterBloc());
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.lazySingleton<_i272.HomePageMockupDataSource>(
       () => _i272.HomePageMockupDataSourceImpl(),
@@ -75,11 +86,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1010.AuthRemoteDataSource>(
       () => _i1010.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.factory<_i250.GetNearbyUntits>(
+      () => _i250.GetNearbyUntits(gh<_i499.HomePageRepository>()),
+    );
+    gh.factory<_i508.GetRecentUnits>(
+      () => _i508.GetRecentUnits(gh<_i499.HomePageRepository>()),
+    );
     gh.factory<_i713.GetUnitsByCategory>(
       () => _i713.GetUnitsByCategory(gh<_i499.HomePageRepository>()),
     );
     gh.lazySingleton<_i942.AuthRepository>(
       () => _i939.AuthRepoImpl(gh<_i1010.AuthRemoteDataSource>()),
+    );
+    gh.factory<_i590.RecommendedUnitsBloc>(
+      () => _i590.RecommendedUnitsBloc(gh<_i713.GetUnitsByCategory>()),
     );
     gh.factory<_i559.CurrentUser>(
       () => _i559.CurrentUser(gh<_i942.AuthRepository>()),
@@ -90,9 +110,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i436.UserSignUp>(
       () => _i436.UserSignUp(gh<_i942.AuthRepository>()),
     );
-    gh.factory<_i140.HomeBloc>(
-      () => _i140.HomeBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
-    );
     gh.factory<_i647.SearchBloc>(
       () =>
           _i647.SearchBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
@@ -100,8 +117,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i545.UserLogin>(
       () => _i545.UserLogin(authRepository: gh<_i942.AuthRepository>()),
     );
+    gh.factory<_i992.RecentlyAddedUnitsBloc>(
+      () => _i992.RecentlyAddedUnitsBloc(
+        getRecentUnits: gh<_i508.GetRecentUnits>(),
+      ),
+    );
     gh.singleton<_i775.SessionCubit>(
       () => _i775.SessionCubit(gh<_i559.CurrentUser>()),
+    );
+    gh.factory<_i921.NearbyUnitsBloc>(
+      () => _i921.NearbyUnitsBloc(getNearbyUntits: gh<_i250.GetNearbyUntits>()),
     );
     gh.factory<_i321.AuthBloc>(
       () => _i321.AuthBloc(

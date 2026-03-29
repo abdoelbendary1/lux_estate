@@ -1,7 +1,7 @@
 import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.dart';
 
 class UnitCategoryDM extends UnitCategoryEntity {
-  UnitCategoryDM({super.id, super.name});
+  const UnitCategoryDM({super.id, super.name});
 
  factory UnitCategoryDM.fromJson(Map<String, dynamic> json) =>
       UnitCategoryDM(id: json['id'], name: json['name']);

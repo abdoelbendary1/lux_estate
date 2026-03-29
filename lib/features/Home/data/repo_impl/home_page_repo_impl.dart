@@ -25,4 +25,31 @@ class HomePageRepoImpl implements HomePageRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failures, List<PropertyUnitEntity>>> getPropertiesByLocation({
+    required String lat,
+    required String lang,
+  }) async {
+    try {
+      final result = await mockupDataSource.getPropertiesByLocation(
+        lat: lat,
+        lang: lang,
+      );
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failures, List<PropertyUnitEntity>>>
+  getRecentlyAddedUnits() async {
+    try {
+      final result = await mockupDataSource.getRecentlyAddedUnits();
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

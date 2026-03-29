@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:lux_estate/core/theme/app_colors.dart';
 
 class PropertyCardShimmer extends StatelessWidget {
   const PropertyCardShimmer({super.key});
@@ -33,34 +32,40 @@ class PropertyCardShimmer extends StatelessWidget {
 
             // 2. Bottom Info Section Shimmer
             Padding(
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.only(bottom: 8.0.h, left: 8.w),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Investment Price Label Placeholder
-                      Container(
-                        width: 80.w,
-                        height: 10.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(4.r),
+                  // Wrap the Column in Expanded to prevent horizontal overflow
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Investment Price Label Placeholder
+                        Container(
+                          width: 80.w,
+                          height: 10.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 8.h),
-                      // Price Value Placeholder
-                      Container(
-                        width: 60.w,
-                        height: 18.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(4.r),
+                        SizedBox(height: 8.h),
+                        // Price Value Placeholder
+                        Container(
+                          width: 60.w,
+                          height: 18.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  SizedBox(
+                    width: 8.w,
+                  ), // Added a small gap so elements don't touch
                   // Button Placeholder
                   Container(
                     width: 100.w,

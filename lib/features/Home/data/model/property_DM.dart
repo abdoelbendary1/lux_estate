@@ -10,7 +10,7 @@ import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.da
 import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.dart';
 
 class PropertyDM extends PropertyUnitEntity {
-  PropertyDM({
+  const PropertyDM({
     super.id,
     super.name,
     super.bedCount,

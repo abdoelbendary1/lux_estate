@@ -1,7 +1,7 @@
 import 'package:lux_estate/features/Home/domain/entities/owener_entity.dart';
 
 class OwnerDM extends OwnerEntity {
-  OwnerDM({required super.id, required super.name, required super.imageUrl});
+  const OwnerDM({required super.id, required super.name, required super.imageUrl});
 
   factory OwnerDM.fromJson(Map<String, dynamic> json) =>
       OwnerDM(id: json['id'], name: json['name'], imageUrl: json['imageUrl']);

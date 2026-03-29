@@ -7,12 +7,14 @@ import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
-import 'package:lux_estate/features/Home/presentation/pages/favorites_screen.dart';
-import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/nearby_units/nearby_units_list.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/recently_added/recently_added_list.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/saved_units.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/explore.dart';
 import 'package:lux_estate/features/Home/presentation/pages/layout_bottom_nav_bar.dart';
-import 'package:lux_estate/features/Home/presentation/pages/messeges_screen.dart';
-import 'package:lux_estate/features/Home/presentation/pages/explore_screen.dart';
-import 'package:lux_estate/features/Home/presentation/pages/settings_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/chats/presentation/pages/chats.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/settings.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/shared/shared_units.dart';
 import 'package:lux_estate/features/auth/presentation/pages/login_page.dart';
 import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart';
@@ -54,9 +56,10 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.homePath, // Remove leading '/' for GoRoute
-                name: AppRoutes.homeName,
-                builder: (context, state) => HomeScreen(),
+                path: AppRoutes
+                    .exploreScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.exploreScreenName,
+                builder: (context, state) => ExploreTab(),
                 routes: [
                   GoRoute(
                     path: AppRoutes.detailsScreenPath,
@@ -75,10 +78,25 @@ class AppRouter {
                     path: AppRoutes.searchScreenPath,
                     name: AppRoutes.searchScreenName,
                     parentNavigatorKey: _navigatorKey,
-
                     builder: (context, state) => BlocProvider(
                       create: (context) => getIt<SearchBloc>(),
                       child: SearchScreen(),
+                    ),
+                  ),
+                  GoRoute(
+                    path: AppRoutes.recentlyAdedScreenPath,
+                    name: AppRoutes.recentlyAdedScreenName,
+                    parentNavigatorKey: _navigatorKey,
+                    builder: (context, state) => RecentlyAddedListPage(
+                      units: state.extra as List<PropertyUnitEntity>,
+                    ),
+                  ),
+                  GoRoute(
+                    path: AppRoutes.nearbyScreenPath,
+                    name: AppRoutes.nearbyScreenName,
+                    parentNavigatorKey: _navigatorKey,
+                    builder: (context, state) => NearbyUnitsListPage(
+                      units: state.extra as List<PropertyUnitEntity>,
                     ),
                   ),
                 ],
@@ -88,10 +106,10 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes
-                    .exploreScreenPath, // Remove leading '/' for GoRoute
-                name: AppRoutes.exploreScreenName,
-                builder: (context, state) => ExploreScreen(),
+                path:
+                    AppRoutes.savedScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.savedScreenName,
+                builder: (context, state) => SavedUnitsTab(),
               ),
             ],
           ),
@@ -99,9 +117,10 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRoutes
-                    .favoritesScreenPath, // Remove leading '/' for GoRoute
-                name: AppRoutes.favoritesScreenName,
-                builder: (context, state) => FavoritesScreen(),
+                    .sharedScreenPath, // Remove leading '/' for GoRoute
+                name: AppRoutes.sharedScreenName,
+
+                builder: (context, state) => SharedHousingTab(),
               ),
             ],
           ),
@@ -112,7 +131,7 @@ class AppRouter {
                     .messagesScreenPath, // Remove leading '/' for GoRoute
                 name: AppRoutes.messagesScreenName,
 
-                builder: (context, state) => MessegesScreen(),
+                builder: (context, state) => MessagesTab(),
               ),
             ],
           ),
@@ -152,7 +171,7 @@ class AppRouter {
       // 3. If Logged In
       if (sessionState is SessionAuthenticated) {
         // If they are on Login/Register, kick them to Home
-        return isAuthPage ? AppRoutes.homePath : null;
+        return isAuthPage ? AppRoutes.exploreScreenPath : null;
       }
 
       return null;

@@ -1,7 +1,7 @@
 import 'package:lux_estate/features/Home/domain/entities/developer_entity.dart';
 
 class DeveloperDM extends DeveloperEntity {
-  DeveloperDM({
+  const DeveloperDM({
     required super.id,
     required super.name,
     required super.imageUrl,

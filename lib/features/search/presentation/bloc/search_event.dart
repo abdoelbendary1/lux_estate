@@ -8,3 +8,9 @@ final class PerformSearch extends SearchEvent {
 
   PerformSearch({required this.query});
 }
+
+final class SelectFilterCategories extends SearchEvent {
+  final List<PropertyCategories> categories;
+
+  SelectFilterCategories({required this.categories});
+}

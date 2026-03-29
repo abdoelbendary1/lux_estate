@@ -46,7 +46,7 @@ class _TopSnackBarWidget extends StatefulWidget {
   final String title;
   final NotifyUserType type;
 
-  _TopSnackBarWidget({
+  const _TopSnackBarWidget({
     required this.onDismiss,
     required this.isRtl,
     required this.message,

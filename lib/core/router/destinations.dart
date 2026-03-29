@@ -13,11 +13,11 @@ class Destinations {
 }
 
 final List<Destinations> appDestinations = [
-  Destinations(
-    selectedIcon: Icons.home,
-    unSelectedIcon: Icons.home_outlined,
-    label: 'Home',
-  ),
+  // Destinations(
+  //   selectedIcon: Icons.home,
+  //   unSelectedIcon: Icons.home_outlined,
+  //   label: 'Home',
+  // ),
   Destinations(
     selectedIcon: Icons.explore,
     unSelectedIcon: Icons.explore_outlined,
@@ -29,9 +29,19 @@ final List<Destinations> appDestinations = [
     label: 'Saved',
   ),
   Destinations(
+    selectedIcon: Icons.people_alt,
+    unSelectedIcon: Icons.people_alt_outlined,
+    label: 'Shared',
+  ),
+  Destinations(
     selectedIcon: Icons.message_rounded,
     unSelectedIcon: Icons.message_outlined,
-    label: 'Messages',
+    label: 'Chats',
+  ),
+  Destinations(
+    selectedIcon: Icons.settings,
+    unSelectedIcon: Icons.settings_outlined,
+    label: 'Settings',
   ),
   // Destinations(icon: Icons.profile, label: 'Profile'),
 ];

@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lux_estate/core/constants.dart';
 import 'package:lux_estate/core/cubits/bottom_navbar/bottom_navbar_cubit.dart';
 import 'package:lux_estate/core/router/destinations.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
@@ -17,6 +18,24 @@ class LayoutBottomNavBar extends StatelessWidget {
     return BlocBuilder<NavbarVisibilityCubit, bool>(
       builder: (context, state) {
         return Scaffold(
+          // appBar: AppBar(
+          //   // toolbarHeight: 80.h,
+          //   shape: RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.only(
+          //       bottomLeft: Radius.circular(30.r),
+          //       bottomRight: Radius.circular(30.r),
+          //     ),
+          //   ),
+          //   // leading: Icon(Icons.menu, color: AppColors.textWhite, size: 28.sp),
+          //   // title: Text(
+          //   //   'LUXESTATE',
+          //   //   style: TextStyle(
+          //   //     color: AppColors.textWhite,
+          //   //     fontWeight: FontWeight.bold,
+          //   //     fontSize: 20.sp,
+          //   //   ),
+          //   // ),
+          // ),
           resizeToAvoidBottomInset: false,
           extendBody: true,
           body: NotificationListener<ScrollNotification>(
@@ -84,8 +103,7 @@ class _SlidingNavBarWidget extends StatelessWidget {
         8.w,
         16.h,
       ), // Creates the floating effect
-
-      height: 75.h,
+      // height: 75.h,
       decoration: BoxDecoration(
         color: AppColors.primary, // Deep Navy from your image
         borderRadius: BorderRadius.circular(40.r), // Pill shape
@@ -109,7 +127,7 @@ class _SlidingNavBarWidget extends StatelessWidget {
             behavior: HitTestBehavior.opaque,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               decoration: BoxDecoration(
                 // The oval indicator for the active item
                 color: isSelected
@@ -117,6 +135,11 @@ class _SlidingNavBarWidget extends StatelessWidget {
                     : AppColors.transparent,
                 borderRadius: BorderRadius.circular(30.r),
               ),
+              // child: Icon(
+              //   isSelected ? d.selectedIcon : d.unSelectedIcon,
+              //   color: AppColors.backgroundWhite,
+              //   size: 24.sp,
+              // ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -130,7 +153,7 @@ class _SlidingNavBarWidget extends StatelessWidget {
                     d.label.toUpperCase(),
                     style: TextStyle(
                       color: AppColors.backgroundWhite,
-                      fontSize: 10.sp,
+                      fontSize: 6.sp,
                       fontWeight: isSelected
                           ? FontWeight.bold
                           : FontWeight.normal,

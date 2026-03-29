@@ -4,14 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/core/utils/notify_user.dart';
-import 'package:lux_estate/features/Home/presentation/pages/home_screen.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/explore.dart';
 import 'package:lux_estate/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:lux_estate/features/auth/presentation/controller/bloc/auth_bloc.dart';
 import 'package:lux_estate/features/auth/presentation/widgets/register_form.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 class RegisterScreen extends StatelessWidget {
-  static get route => MaterialPageRoute(builder: (_) => RegisterScreen());
+  static MaterialPageRoute<dynamic> get route => MaterialPageRoute(builder: (_) => RegisterScreen());
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController fullNameController = TextEditingController();
@@ -21,6 +21,8 @@ class RegisterScreen extends StatelessWidget {
   AuthRemoteDataSource authRemoteDataSource = AuthRemoteDataSourceImpl(
     getIt<SupabaseClient>(),
   );
+
+  RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

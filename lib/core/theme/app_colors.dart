@@ -3,16 +3,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color primary = Color(0xFF03045E);
+  static const Color primary = Color(0xFF05054B);
 
   static const Color backgroundWhite = Color(0xFFFFFFFF);
   static const Color secondary = Color(0xFF5DCAFD);
   static const Color black = Color(0xFF1B1B20);
   static const Color grey = Color(0xFF777682);
-  static const Color success = const Color(0xFF4ADE80);
-  static const Color error = const Color(0xFFF87171);
-  static const Color warning = const Color(0xFFFBBF24);
-  static const Color info = const Color(0xFF3B82F6);
+  static const Color success = Color(0xFF4ADE80);
+  static const Color error = Color(0xFFF87171);
+  static const Color warning = Color(0xFFFBBF24);
+  static const Color info = Color(0xFF3B82F6);
   static const Color darkBlueBg = Color(0xFF030D3A); // Dark navy background
   static const Color accentBlue = Color(0xFF327CF2); // Text accents
   static const Color cardDark = Color(

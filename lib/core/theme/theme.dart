@@ -36,9 +36,10 @@ class AppTheme {
     ),
 
     appBarTheme: const AppBarTheme(
+      surfaceTintColor: Colors.transparent,
       elevation: 0,
-      backgroundColor: AppColors.backgroundWhite,
-      foregroundColor: AppColors.black,
+      backgroundColor: AppColors.primary,
+      foregroundColor: AppColors.primary,
       centerTitle: true,
     ),
 

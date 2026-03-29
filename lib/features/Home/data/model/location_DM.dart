@@ -1,7 +1,7 @@
 import 'package:lux_estate/features/Home/domain/entities/location_entity.dart';
 
 class LocationDM extends LocationEntity {
-  LocationDM({super.name, super.latitude, super.longitude});
+  const LocationDM({super.name, super.latitude, super.longitude});
 
   factory LocationDM.fromJson(Map<String, dynamic> json) {
     return LocationDM(
@@ -17,7 +17,7 @@ class LocationDM extends LocationEntity {
     'longitude': longitude,
   };
 
-  LocationDM copyWith({String? name, double? latitude, double? longitude}) =>
+  LocationDM copyWith({String? name, String? latitude, String? longitude}) =>
       LocationDM(
         name: name ?? this.name,
         latitude: latitude ?? this.latitude,
