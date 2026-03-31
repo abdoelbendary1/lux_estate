@@ -5,8 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/core/error/failuers.dart';
 import 'package:lux_estate/features/Home/data/datasource/home_page_mockup_data_source.dart';
-import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/domain/repo/Home_page_repo.dart';
+import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 
 @LazySingleton(as: HomePageRepository)
 class HomePageRepoImpl implements HomePageRepository {

@@ -10,8 +10,8 @@ import 'package:lux_estate/core/utils/property_card/empty_property_card.dart';
 import 'package:lux_estate/core/utils/property_card/filter_dialog.dart';
 import 'package:lux_estate/core/utils/property_card/property_card_shimmer.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/widgets/property_card.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/search_appbar/search_appbar.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/Widgets/property_card.dart';
+import 'package:lux_estate/features/search/presentation/pages/widgets/search_appbar/search_appbar.dart';
 import 'package:lux_estate/features/search/presentation/bloc/filter/filter_cubit.dart';
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart';
 import 'package:lux_estate/features/search/presentation/pages/widgets/search_placeholder.dart';
@@ -221,7 +221,7 @@ class SearchScreen extends StatelessWidget {
           ),
 
           child: PropertyCard(
-            isDataVisable: true,
+            isDataVisible: true,
             propertyUnit: units[index],
             viewUnitDetails: () {
               context.pushNamed(

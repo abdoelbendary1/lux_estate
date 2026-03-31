@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/constants.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/chats/domain/entity/chat_message.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/search_appbar/search_appbar.dart';
+import 'package:lux_estate/features/search/presentation/pages/widgets/search_appbar/search_appbar.dart';
 
 class MessagesTab extends StatelessWidget {
   const MessagesTab({super.key});
@@ -127,7 +128,7 @@ class MessagesTab extends StatelessWidget {
                 backgroundColor: const Color(0xFFE0E0E0),
                 backgroundImage: chat.isDeveloper
                     ? null
-                    : const NetworkImage('https://via.placeholder.com/150'),
+                    : AssetImage(AppAssetsPath.villa),
                 child: chat.isDeveloper
                     ? Icon(Icons.business, color: Colors.black54, size: 30.sp)
                     : null,

@@ -4,7 +4,7 @@ import 'package:lux_estate/features/Home/domain/entities/location_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/owener_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.dart';
 
- class PropertyUnitEntity extends Equatable {
+class PropertyUnitEntity extends Equatable {
   final String? id;
   final String? name;
   final num? bedCount;

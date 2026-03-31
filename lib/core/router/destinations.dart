@@ -28,20 +28,20 @@ final List<Destinations> appDestinations = [
     unSelectedIcon: Icons.favorite_border,
     label: 'Saved',
   ),
-  Destinations(
-    selectedIcon: Icons.people_alt,
-    unSelectedIcon: Icons.people_alt_outlined,
-    label: 'Shared',
-  ),
+  // Destinations(
+  //   selectedIcon: Icons.people_alt,
+  //   unSelectedIcon: Icons.people_alt_outlined,
+  //   label: 'Shared',
+  // ),
   Destinations(
     selectedIcon: Icons.message_rounded,
     unSelectedIcon: Icons.message_outlined,
     label: 'Chats',
   ),
   Destinations(
-    selectedIcon: Icons.settings,
-    unSelectedIcon: Icons.settings_outlined,
-    label: 'Settings',
+    selectedIcon: Icons.person,
+    unSelectedIcon: Icons.person_outline,
+    label: 'Profile',
   ),
   // Destinations(icon: Icons.profile, label: 'Profile'),
 ];

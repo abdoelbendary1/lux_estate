@@ -5,13 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
-import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/features/Home/data/datasource/home_page_mockup_data_source.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
-import 'package:lux_estate/features/Home/presentation/bloc/recomended_units/recommended_units_bloc.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/widgets/category_section.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/widgets/property_card.dart';
-import 'package:path/path.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/Widgets/category_section.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/Widgets/property_card.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/recomended_units/recommended_units_bloc.dart';
 
 class SavedUnitsTab extends StatelessWidget {
   SavedUnitsTab({super.key});
@@ -27,7 +25,8 @@ class SavedUnitsTab extends StatelessWidget {
     );
   }
 
-  HomePageMockupDataSourceImpl _dataSourceImpl = HomePageMockupDataSourceImpl();
+  final HomePageMockupDataSourceImpl _dataSourceImpl =
+      HomePageMockupDataSourceImpl();
 
   Widget _buildSuccessUI() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +75,7 @@ class SavedUnitsTab extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: PropertyCard(
-            isDataVisable: true,
+            isDataVisible: true,
             propertyUnit: units[index],
             viewUnitDetails: () {
               context.pushNamed(

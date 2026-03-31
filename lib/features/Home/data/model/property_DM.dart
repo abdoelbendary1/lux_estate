@@ -6,6 +6,7 @@ import 'package:lux_estate/features/Home/data/model/unit_category_DM.dart';
 import 'package:lux_estate/features/Home/domain/entities/developer_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/location_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/owener_entity.dart';
+
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.dart';
 

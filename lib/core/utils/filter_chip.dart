@@ -3,55 +3,67 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 
 class AppFilterChip extends StatelessWidget {
-  AppFilterChip({
+  const AppFilterChip({
     super.key,
     required this.isSelected,
     required this.displayName,
     this.onSelected,
+    this.hasIcon = false,
+    this.icon,
   });
 
-  bool isSelected;
-  String displayName;
-  void Function(bool)? onSelected;
+  final bool isSelected;
+  final String displayName;
+  final void Function(bool)? onSelected;
+  final bool? hasIcon;
+  final IconData? icon;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return FilterChip(
       autofocus: true,
-
       side: BorderSide.none,
-      label: Text(displayName),
+      label: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          hasIcon ?? false
+              ? Visibility(
+                  visible: hasIcon ?? false && icon != null,
+                  child: Icon(
+                    icon ?? Icons.tune,
+                    size: 16.sp,
+                    color: isSelected
+                        ? AppColors.backgroundWhite
+                        : AppColors.primary,
+                  ),
+                )
+              : const SizedBox.shrink(),
+          Visibility(
+            visible: hasIcon ?? false,
+            child: SizedBox(width: 4.w),
+          ),
+          Text(
+            displayName,
+            style: theme.textTheme.bodyMedium!.copyWith(
+              fontWeight: FontWeight.bold,
+              color: isSelected ? AppColors.backgroundWhite : AppColors.primary,
+            ),
+          ),
+        ],
+      ),
       selected: isSelected,
-
-      // Text Styles (Matches Image)
-      labelStyle: TextStyle(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w500,
-        // White on black, black on grey
+      labelStyle: theme.textTheme.bodyLarge!.copyWith(
         color: isSelected ? AppColors.backgroundWhite : AppColors.primary,
       ),
-
-      // Background Colors (Matches Image)
-      selectedColor: AppColors.primary, // Selected background
-      backgroundColor: AppColors.grey.withOpacity(0.05), // Unselected
-      // Visual Settings (Key parts of the "Chip" Look)
-      showCheckmark: false, // Turn off selection icon
-      pressElevation: 1, // subtle interaction feel
-      // Shape (Full Pill)
+      selectedColor: AppColors.primary,
+      backgroundColor: AppColors.grey.withOpacity(0.05),
+      showCheckmark: false,
+      pressElevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25.r),
-        // Ensures no default chip border is visible
         side: BorderSide(color: AppColors.transparent),
       ),
-
-      // Internal Padding
-      padding: EdgeInsets.symmetric(
-        horizontal: 16.w,
-        vertical: 12.h, // vertical pads the text
-      ),
-
-      // Minimize extra padding around the chip
-      labelPadding: EdgeInsets.zero,
-
       onSelected: onSelected,
     );
   }

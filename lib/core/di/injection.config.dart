@@ -13,8 +13,11 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:lux_estate/core/cubits/bottom_navbar/bottom_navbar_cubit.dart'
     as _i290;
+import 'package:lux_estate/core/cubits/locale/locale_cubit.dart' as _i1002;
 import 'package:lux_estate/core/cubits/obsecure_password/obsecure_password_cubit.dart'
     as _i674;
+import 'package:lux_estate/core/cubits/swipe_card_animation/cubit/swipe_cards_animation_cubit.dart'
+    as _i186;
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart'
     as _i775;
 import 'package:lux_estate/core/di/register_module.dart' as _i14;
@@ -47,12 +50,12 @@ import 'package:lux_estate/features/Home/domain/usecase/getPropertiesByCategory.
     as _i713;
 import 'package:lux_estate/features/Home/domain/usecase/GetRecentUnits.dart'
     as _i508;
-import 'package:lux_estate/features/Home/presentation/bloc/nearbyUnits/nearby_units_bloc.dart'
-    as _i921;
-import 'package:lux_estate/features/Home/presentation/bloc/recentlyAdded/recently_added_units_bloc.dart'
-    as _i992;
-import 'package:lux_estate/features/Home/presentation/bloc/recomended_units/recommended_units_bloc.dart'
-    as _i590;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/bloc/nearbyUnits/nearby_units_bloc.dart'
+    as _i310;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/bloc/recentlyAdded/recently_added_units_bloc.dart'
+    as _i1065;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/recomended_units/recommended_units_bloc.dart'
+    as _i263;
 import 'package:lux_estate/features/search/presentation/bloc/filter/filter_cubit.dart'
     as _i320;
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart'
@@ -70,36 +73,28 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i290.NavbarVisibilityCubit>(
       () => _i290.NavbarVisibilityCubit(),
     );
+    gh.factory<_i1002.LocaleCubit>(() => _i1002.LocaleCubit());
     gh.factory<_i674.ObsecurePasswordCubit>(
       () => _i674.ObsecurePasswordCubit(),
+    );
+    gh.factory<_i186.SwipeCardsAnimationCubit>(
+      () => _i186.SwipeCardsAnimationCubit(),
     );
     gh.factory<_i320.FilterBloc>(() => _i320.FilterBloc());
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.lazySingleton<_i272.HomePageMockupDataSource>(
       () => _i272.HomePageMockupDataSourceImpl(),
     );
+    gh.lazySingleton<_i1010.AuthRemoteDataSource>(
+      () => _i1010.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i499.HomePageRepository>(
       () => _i551.HomePageRepoImpl(
         mockupDataSource: gh<_i272.HomePageMockupDataSource>(),
       ),
     );
-    gh.lazySingleton<_i1010.AuthRemoteDataSource>(
-      () => _i1010.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
-    gh.factory<_i250.GetNearbyUntits>(
-      () => _i250.GetNearbyUntits(gh<_i499.HomePageRepository>()),
-    );
-    gh.factory<_i508.GetRecentUnits>(
-      () => _i508.GetRecentUnits(gh<_i499.HomePageRepository>()),
-    );
-    gh.factory<_i713.GetUnitsByCategory>(
-      () => _i713.GetUnitsByCategory(gh<_i499.HomePageRepository>()),
-    );
     gh.lazySingleton<_i942.AuthRepository>(
       () => _i939.AuthRepoImpl(gh<_i1010.AuthRemoteDataSource>()),
-    );
-    gh.factory<_i590.RecommendedUnitsBloc>(
-      () => _i590.RecommendedUnitsBloc(gh<_i713.GetUnitsByCategory>()),
     );
     gh.factory<_i559.CurrentUser>(
       () => _i559.CurrentUser(gh<_i942.AuthRepository>()),
@@ -110,23 +105,29 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i436.UserSignUp>(
       () => _i436.UserSignUp(gh<_i942.AuthRepository>()),
     );
-    gh.factory<_i647.SearchBloc>(
-      () =>
-          _i647.SearchBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
+    gh.factory<_i250.GetNearbyUntits>(
+      () => _i250.GetNearbyUntits(gh<_i499.HomePageRepository>()),
+    );
+    gh.factory<_i508.GetRecentUnits>(
+      () => _i508.GetRecentUnits(gh<_i499.HomePageRepository>()),
+    );
+    gh.factory<_i713.GetUnitsByCategory>(
+      () => _i713.GetUnitsByCategory(gh<_i499.HomePageRepository>()),
     );
     gh.factory<_i545.UserLogin>(
       () => _i545.UserLogin(authRepository: gh<_i942.AuthRepository>()),
     );
-    gh.factory<_i992.RecentlyAddedUnitsBloc>(
-      () => _i992.RecentlyAddedUnitsBloc(
+    gh.factory<_i1065.RecentlyAddedUnitsBloc>(
+      () => _i1065.RecentlyAddedUnitsBloc(
         getRecentUnits: gh<_i508.GetRecentUnits>(),
       ),
     );
     gh.singleton<_i775.SessionCubit>(
       () => _i775.SessionCubit(gh<_i559.CurrentUser>()),
     );
-    gh.factory<_i921.NearbyUnitsBloc>(
-      () => _i921.NearbyUnitsBloc(getNearbyUntits: gh<_i250.GetNearbyUntits>()),
+    gh.factory<_i647.SearchBloc>(
+      () =>
+          _i647.SearchBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
     );
     gh.factory<_i321.AuthBloc>(
       () => _i321.AuthBloc(
@@ -135,6 +136,12 @@ extension GetItInjectableX on _i174.GetIt {
         currentUser: gh<_i559.CurrentUser>(),
         logoutUser: gh<_i534.LogoutUser>(),
       ),
+    );
+    gh.factory<_i310.NearbyUnitsBloc>(
+      () => _i310.NearbyUnitsBloc(getNearbyUntits: gh<_i250.GetNearbyUntits>()),
+    );
+    gh.factory<_i263.RecommendedUnitsBloc>(
+      () => _i263.RecommendedUnitsBloc(gh<_i713.GetUnitsByCategory>()),
     );
     gh.singleton<_i1020.AppRouter>(
       () => _i1020.AppRouter(gh<_i775.SessionCubit>()),

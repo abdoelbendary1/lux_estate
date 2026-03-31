@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/cubits/swipe_card_animation/cubit/swipe_cards_animation_cubit.dart';
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
+import 'package:lux_estate/core/extentions/widget_padding.dart';
+import 'package:lux_estate/core/theme/app_sizes.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/recomended_units/recommended_units_bloc.dart';
+import 'package:lux_estate/core/utils/filter_chip.dart';
+
+class CategorySection extends StatefulWidget {
+  const CategorySection({super.key});
+
+  @override
+  State<CategorySection> createState() => _CategorySectionState();
+}
+
+class _CategorySectionState extends State<CategorySection> {
+  // 1. Initialize the ScrollController
+  final ScrollController _scrollController = ScrollController();
+  final List<PropertyCategories> _categories = PropertyCategories.values
+      .toList();
+
+  // 2. Function to calculate and perform the scroll
+  void _scrollToSelected(int index) {
+    if (_scrollController.hasClients) {
+      // Approximate width: Chip width + Separator width
+      // You may need to adjust '100' based on your actual chip width
+      double offset = index * 100.w;
+
+      _scrollController.animateTo(
+        offset,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<RecommendedUnitsBloc, RecommendedUnitsState>(
+      // 3. Listen for state changes to trigger scroll
+      listenWhen: (prev, curr) =>
+          prev.selectedCategory != curr.selectedCategory,
+      listener: (context, state) {
+        final index = _categories.indexOf(state.selectedCategory);
+        if (index != -1) _scrollToSelected(index);
+      },
+      child: BlocBuilder<RecommendedUnitsBloc, RecommendedUnitsState>(
+        builder: (context, state) {
+          return Align(
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              height: 40.h,
+              child: ListView.separated(
+                controller: _scrollController, // 4. Attach the controller
+                scrollDirection: Axis.horizontal,
+                itemCount: _categories.length,
+                separatorBuilder: (context, index) =>
+                    AppSizes.spaceS.horizontalSpace,
+                itemBuilder: (context, index) {
+                  final category = _categories[index];
+                  return AppFilterChip(
+                    isSelected: category == state.selectedCategory,
+                    displayName: category.getLocalizedName(context),
+                    onSelected: (_) {
+                      context.read<RecommendedUnitsBloc>().add(
+                        LoadPropertiesByCategoryEvent(category: category),
+                      );
+                      context.read<SwipeCardsAnimationCubit>().changeIndex(0);
+                    },
+                  );
+                },
+              ),
+            ).m(AppSizes.marginM),
+          );
+        },
+      ),
+    );
+  }
+}

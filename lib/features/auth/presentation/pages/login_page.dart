@@ -12,7 +12,8 @@ import 'package:lux_estate/features/auth/presentation/widgets/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  static MaterialPageRoute<dynamic> get route => MaterialPageRoute(builder: (_) => LoginScreen());
+  static MaterialPageRoute<dynamic> get route =>
+      MaterialPageRoute(builder: (_) => LoginScreen());
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 

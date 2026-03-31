@@ -1,3 +1,4 @@
+
 import 'package:lux_estate/features/Home/domain/entities/developer_entity.dart';
 
 class DeveloperDM extends DeveloperEntity {

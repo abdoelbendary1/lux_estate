@@ -43,18 +43,17 @@ class BuildAppButton extends StatelessWidget {
                 ? Icon(
                     leadingIcon,
                     color: AppColors.backgroundWhite,
-                    size: 16.r,
+                    size: 25.r,
                   )
                 : SizedBox.shrink(),
             SizedBox(width: 8.w),
 
             Text(
               actionText.toUpperCase(),
-              style: TextStyle(
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color: AppColors.backgroundWhite,
-                fontSize: 13.sp,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 1,
+                fontSize: 16.sp,
               ),
             ),
             SizedBox(width: 8.w),
@@ -62,7 +61,7 @@ class BuildAppButton extends StatelessWidget {
                 ? Icon(
                     trailingIcon,
                     color: AppColors.backgroundWhite,
-                    size: 16.r,
+                    size: 25.r,
                   )
                 : SizedBox.shrink(),
           ],

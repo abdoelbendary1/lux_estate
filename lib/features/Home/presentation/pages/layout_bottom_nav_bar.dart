@@ -146,14 +146,14 @@ class _SlidingNavBarWidget extends StatelessWidget {
                   Icon(
                     isSelected ? d.selectedIcon : d.unSelectedIcon,
                     color: AppColors.backgroundWhite,
-                    size: 24.sp,
+                    size: 25.r,
                   ),
-                  SizedBox(height: 4.h),
+                  SizedBox(height: 2.h),
                   Text(
                     d.label.toUpperCase(),
                     style: TextStyle(
                       color: AppColors.backgroundWhite,
-                      fontSize: 6.sp,
+                      fontSize: 12.sp,
                       fontWeight: isSelected
                           ? FontWeight.bold
                           : FontWeight.normal,

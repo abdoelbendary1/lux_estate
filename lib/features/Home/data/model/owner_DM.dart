@@ -1,3 +1,4 @@
+
 import 'package:lux_estate/features/Home/domain/entities/owener_entity.dart';
 
 class OwnerDM extends OwnerEntity {

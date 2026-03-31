@@ -7,14 +7,13 @@ import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/nearby_units/nearby_units_list.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/recently_added/recently_added_list.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/saved_units.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/explore.dart';
-import 'package:lux_estate/features/Home/presentation/pages/layout_bottom_nav_bar.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/chats/presentation/pages/chats.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/explore.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/nearby_units/nearby_units_list.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recently_added/recently_added_list.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/saved_units.dart';
+import 'package:lux_estate/features/Home/presentation/pages/layout_bottom_nav_bar.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/settings.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/shared/shared_units.dart';
 import 'package:lux_estate/features/auth/presentation/pages/login_page.dart';
 import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart';
@@ -113,17 +112,17 @@ class AppRouter {
               ),
             ],
           ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes
-                    .sharedScreenPath, // Remove leading '/' for GoRoute
-                name: AppRoutes.sharedScreenName,
+          // StatefulShellBranch(
+          //   routes: [
+          //     GoRoute(
+          //       path: AppRoutes
+          //           .sharedScreenPath, // Remove leading '/' for GoRoute
+          //       name: AppRoutes.sharedScreenName,
 
-                builder: (context, state) => SharedHousingTab(),
-              ),
-            ],
-          ),
+          //       builder: (context, state) => SharedHousingTab(),
+          //     ),
+          //   ],
+          // ),
           StatefulShellBranch(
             routes: [
               GoRoute(

@@ -11,7 +11,8 @@ import 'package:lux_estate/features/auth/presentation/widgets/register_form.dart
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 class RegisterScreen extends StatelessWidget {
-  static MaterialPageRoute<dynamic> get route => MaterialPageRoute(builder: (_) => RegisterScreen());
+  static MaterialPageRoute<dynamic> get route =>
+      MaterialPageRoute(builder: (_) => RegisterScreen());
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController fullNameController = TextEditingController();

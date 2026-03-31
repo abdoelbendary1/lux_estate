@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/core/error/app_exceptions.dart';
-import 'package:lux_estate/features/Home/data/model/location_DM.dart';
+import 'package:lux_estate/features/Home/data/model/location_DM.dart' show LocationDM;
 import 'package:lux_estate/features/Home/data/model/property_DM.dart';
 import 'package:lux_estate/features/Home/data/model/unit_category_DM.dart';
 

@@ -11,15 +11,7 @@ class LanguageSwitcher extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
-          child: Icon(
-            Icons.language,
-            size: AppSizes.iconL,
-            color: AppColors.primary,
-          ),
-        ),
-        AppSizes.paddingXS.horizontalSpace,
+        Icon(Icons.language, size: AppSizes.iconL, color: AppColors.primary),
         // Text(
         //   'ENGLISH',
         //   style: Theme.of(
