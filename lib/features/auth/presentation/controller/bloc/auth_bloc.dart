@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/di/injection.dart';
-import 'package:lux_estate/features/auth/domain/entity/user_entity.dart';
+import 'package:lux_estate/features/auth/domain/entity/Auth_entity.dart';
 import 'package:lux_estate/features/auth/domain/usecase/current_user.dart';
 import 'package:lux_estate/features/auth/domain/usecase/logout_user.dart';
 import 'package:lux_estate/features/auth/domain/usecase/user_login.dart';

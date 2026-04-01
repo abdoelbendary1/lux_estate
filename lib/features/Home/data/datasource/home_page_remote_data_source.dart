@@ -7,6 +7,8 @@ abstract class HomePageRemoteDataSource {
     required int categoryId,
   });
 
+/*************  ✨ Windsurf Command ⭐  *************/
+/*******  646384c4-83b2-41c4-abc8-6443158fe22b  *******/
   Future<Either<Failures, List<PropertyDM>>> getPropertiesByLocation({
     required String lat,
     required String lang,

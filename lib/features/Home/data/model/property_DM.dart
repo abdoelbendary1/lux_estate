@@ -1,4 +1,3 @@
-import 'package:fpdart/fpdart.dart';
 import 'package:lux_estate/features/Home/data/model/developer_DM.dart';
 import 'package:lux_estate/features/Home/data/model/location_DM.dart';
 import 'package:lux_estate/features/Home/data/model/owner_DM.dart';
@@ -6,9 +5,9 @@ import 'package:lux_estate/features/Home/data/model/unit_category_DM.dart';
 import 'package:lux_estate/features/Home/domain/entities/developer_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/location_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/owener_entity.dart';
-
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.dart';
+// استورد باقي الموديلات (LocationModel, OwnerModel, etc.)
 
 class PropertyDM extends PropertyUnitEntity {
   const PropertyDM({
@@ -20,70 +19,71 @@ class PropertyDM extends PropertyUnitEntity {
     super.isSaved,
     super.isFeatured,
     super.isNew,
-    super.isMatched,
     super.size,
     super.price,
     super.imageUrl,
     super.description,
-    super.developer,
-    super.owner,
     super.location,
     super.unitType,
-    super.unitList,
-    super.unitTag,
     super.unitCategory,
+    super.developer,
+    super.owner,
   });
 
   factory PropertyDM.fromJson(Map<String, dynamic> json) {
     return PropertyDM(
       id: json['id'],
       name: json['name'],
-      bedCount: json['bedCount'],
-      bathCount: json['bathCount'],
-      isAvailable: json['isAvailable'],
-      isSaved: json['isSaved'],
-      isFeatured: json['isFeatured'],
-      isNew: json['isNew'],
-      isMatched: json['isMatched'],
+      bedCount: json['bed_count'],
+      bathCount: json['bath_count'],
+      isAvailable: json['is_available'],
+      isFeatured: json['is_featured'],
+      isNew: json['is_new'],
       size: json['size'],
       price: json['price'],
-      imageUrl: json['imageUrl'],
+      imageUrl: json['image_url'],
       description: json['description'],
-      developer: DeveloperDM.fromJson(json['developer']),
-      owner: OwnerDM.fromJson(json['owner']),
-      location: LocationDM.fromJson(json['location']),
-      unitType: json['unitType'],
-      unitList: json['unitList'],
-      unitTag: json['unitTag'],
-      unitCategory: UnitCategoryDM.fromJson(json['unitCategory']),
+      unitType: json['unit_type'],
+      // هنا السحر: بنحول الـ Nested Maps لموديلات فرعية
+      location: json['locations'] != null
+          ? LocationDM.fromJson(json['locations'])
+          : null,
+      unitCategory: json['unit_categories'] != null
+          ? UnitCategoryDM.fromJson(json['unit_categories'])
+          : null,
+      developer: json['developers'] != null
+          ? DeveloperDM.fromJson(json['developers'])
+          : null,
+      owner: json['profiles'] != null
+          ? OwnerDM.fromJson(json['profiles'])
+          : null,
     );
-  }
-
+  } // --- To JSON ---
+  // بنحول الموديل لـ Map عشان نبعته لسوبابيز (Snake Case)
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'name': name,
-      'bedCount': bedCount,
-      'bathCount': bathCount,
-      'isAvailable': isAvailable,
-      'isSaved': isSaved,
-      'isFeatured': isFeatured,
-      'isNew': isNew,
-      'isMatched': isMatched,
+      'bed_count': bedCount,
+      'bath_count': bathCount,
+      'is_available': isAvailable,
+      'is_featured': isFeatured,
+      'is_new': isNew,
       'size': size,
       'price': price,
-      'imageUrl': imageUrl,
+      'image_url': imageUrl,
       'description': description,
-      'developerId': developer,
-      'owner': owner,
-      'location': location,
-      'unitType': unitType,
-      'unitList': unitList,
-      'unitTag': unitTag,
-      'unitCategory': unitCategory,
+      'unit_type': unitType,
+      'category_id': unitCategory?.id, // بنبعت الـ ID بس للربط
+      'developer_id': developer?.id,
+      'owner_id': owner?.id,
+      'location_name': location?.name,
+      'latitude': location?.latitude,
+      'longitude': location?.longitude,
     };
   }
 
+  // --- Copy With ---
+  // لتوليد نسخة جديدة مع تغيير حقول معينة (مهم جداً للـ Bloc)
   PropertyDM copyWith({
     String? id,
     String? name,
@@ -93,18 +93,15 @@ class PropertyDM extends PropertyUnitEntity {
     bool? isSaved,
     bool? isFeatured,
     bool? isNew,
-    bool? isMatched,
     num? size,
     num? price,
     String? imageUrl,
     String? description,
-    DeveloperEntity? developer,
-    OwnerEntity? owner,
     LocationEntity? location,
     String? unitType,
-    String? unitList,
-    String? unitTag,
     UnitCategoryEntity? unitCategory,
+    DeveloperEntity? developer,
+    OwnerEntity? owner,
   }) {
     return PropertyDM(
       id: id ?? this.id,
@@ -115,18 +112,15 @@ class PropertyDM extends PropertyUnitEntity {
       isSaved: isSaved ?? this.isSaved,
       isFeatured: isFeatured ?? this.isFeatured,
       isNew: isNew ?? this.isNew,
-      isMatched: isMatched ?? this.isMatched,
       size: size ?? this.size,
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
       description: description ?? this.description,
-      developer: developer ?? this.developer,
-      owner: owner ?? this.owner,
       location: location ?? this.location,
       unitType: unitType ?? this.unitType,
-      unitList: unitList ?? this.unitList,
-      unitTag: unitTag ?? this.unitTag,
       unitCategory: unitCategory ?? this.unitCategory,
+      developer: developer ?? this.developer,
+      owner: owner ?? this.owner,
     );
   }
 }

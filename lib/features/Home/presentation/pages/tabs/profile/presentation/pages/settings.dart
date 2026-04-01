@@ -1,34 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lux_estate/core/async/async_view_builder.dart';
 import 'package:lux_estate/core/constants.dart';
+import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
+import 'package:lux_estate/core/di/injection.dart';
+import 'package:lux_estate/core/router/app_routes.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/domain/entity/profile_entity.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/presentation/bloc/profile_bloc.dart';
+import 'package:lux_estate/features/auth/presentation/controller/bloc/auth_bloc.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white, // Pure white background
+    return BlocProvider(
+      create: (context) => getIt<ProfileBloc>()
+        ..add(
+          FetchProfileEvent(
+            (context.read<SessionCubit>().state as SessionAuthenticated)
+                .user
+                .id!,
+          ),
+        ),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white, // Pure white background
 
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 20.h),
-              _buildProfileHeader(),
-              SizedBox(height: 30.h),
-              _buildStatsAndTierRow(),
-              SizedBox(height: 30.h),
-              _buildAccountSettingsList(context),
-              SizedBox(height: 100.h), // Space at bottom
-            ],
+          body: BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20.h),
+                    AsyncViewBuilder(
+                      onSuccess: (profile) => _buildProfileHeader(profile),
+                      loadingWidget: CircularProgressIndicator(),
+                      onEmpty: Text('No profile data available'),
+                      state: state.asyncState,
+                      onRetry: () {
+                        if (context.read<SessionCubit>().state
+                            is SessionAuthenticated) {
+                          final userId =
+                              (context.read<SessionCubit>().state
+                                      as SessionAuthenticated)
+                                  .user
+                                  .id;
+                          context.read<ProfileBloc>().add(
+                            FetchProfileEvent(userId!),
+                          );
+                        }
+                      },
+                    ),
+                    SizedBox(height: 30.h),
+                    _buildStatsAndTierRow(),
+                    SizedBox(height: 30.h),
+                    _buildAccountSettingsList(context),
+                    SizedBox(height: 100.h), // Space at bottom
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(ProfileEntity? profile) {
     return Column(
       children: [
         Stack(
@@ -60,7 +101,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         SizedBox(height: 15.h),
         Text(
-          'Alexander Sterling',
+          profile?.fullName ?? 'Guest',
           style: TextStyle(
             fontSize: 32.sp,
             fontWeight: FontWeight.bold,
@@ -249,7 +290,12 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Implement your logout logic here
+                context.read<AuthBloc>().add(UserLogoutEvent());
+
+                if (context.read<SessionCubit>().state
+                    is SessionUnauthenticated) {
+                  context.pushNamed(AppRoutes.loginName);
+                }
               },
             ),
           ),

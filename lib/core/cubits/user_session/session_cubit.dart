@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:lux_estate/features/auth/domain/entity/user_entity.dart';
+import 'package:lux_estate/features/auth/domain/entity/Auth_entity.dart';
 import 'package:lux_estate/features/auth/domain/usecase/current_user.dart';
 import 'package:meta/meta.dart';
 
@@ -24,7 +24,7 @@ class SessionCubit extends Cubit<SessionState> {
     });
   }
 
-  void updateSession(UserEntity? user) {
+  void updateSession(AuthEntity? user) {
     if (user != null) {
       emit(SessionAuthenticated(user));
     } else {

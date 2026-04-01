@@ -56,6 +56,16 @@ import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/feature
     as _i1065;
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/recomended_units/recommended_units_bloc.dart'
     as _i263;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/data/data_source/profile_remote_data_source.dart'
+    as _i1059;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/data/repo_impl/profile_repo_impl.dart'
+    as _i872;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/domain/repo/profile_repo.dart'
+    as _i58;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/domain/usecase/get_profile.dart'
+    as _i688;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/presentation/bloc/profile_bloc.dart'
+    as _i458;
 import 'package:lux_estate/features/search/presentation/bloc/filter/filter_cubit.dart'
     as _i320;
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart'
@@ -82,8 +92,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i320.FilterBloc>(() => _i320.FilterBloc());
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
+    gh.lazySingleton<_i1059.ProfileRemoteDataSource>(
+      () => _i1059.ProfileRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i272.HomePageMockupDataSource>(
       () => _i272.HomePageMockupDataSourceImpl(),
+    );
+    gh.lazySingleton<_i58.ProfileRepo>(
+      () => _i872.ProfileRepoImpl(gh<_i1059.ProfileRemoteDataSource>()),
     );
     gh.lazySingleton<_i1010.AuthRemoteDataSource>(
       () => _i1010.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -104,6 +120,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i436.UserSignUp>(
       () => _i436.UserSignUp(gh<_i942.AuthRepository>()),
+    );
+    gh.factory<_i688.GetProfile>(
+      () => _i688.GetProfile(gh<_i58.ProfileRepo>()),
+    );
+    gh.factory<_i458.ProfileBloc>(
+      () => _i458.ProfileBloc(getProfileUseCase: gh<_i688.GetProfile>()),
     );
     gh.factory<_i250.GetNearbyUntits>(
       () => _i250.GetNearbyUntits(gh<_i499.HomePageRepository>()),

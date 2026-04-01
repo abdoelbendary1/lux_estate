@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/error/app_exceptions.dart';
 import 'package:lux_estate/core/error/failuers.dart';
 import 'package:lux_estate/features/auth/data/data_source/auth_remote_data_source.dart';
-import 'package:lux_estate/features/auth/domain/entity/user_entity.dart';
+import 'package:lux_estate/features/auth/domain/entity/Auth_entity.dart';
 import 'package:lux_estate/features/auth/domain/repo/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
@@ -13,7 +13,7 @@ class AuthRepoImpl implements AuthRepository {
   AuthRepoImpl(this.authRemoteDataSource);
 
   @override
-  Future<Either<Failures, UserEntity?>> getCurrentUser() async {
+  Future<Either<Failures, AuthEntity?>> getCurrentUser() async {
     try {
       final user = await authRemoteDataSource.getCurrentUser();
       return user != null
@@ -27,7 +27,7 @@ class AuthRepoImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failures, UserEntity?>> signIn({
+  Future<Either<Failures, AuthEntity?>> signIn({
     required String email,
     required String password,
   }) async {
@@ -49,7 +49,7 @@ class AuthRepoImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failures, UserEntity?>> signUp({
+  Future<Either<Failures, AuthEntity?>> signUp({
     required String email,
     required String password,
     required String fullName,
@@ -64,7 +64,7 @@ class AuthRepoImpl implements AuthRepository {
   }
 }
 
-Future<Either<Failures, UserEntity?>> _getUser(Future<UserEntity> fn) async {
+Future<Either<Failures, AuthEntity?>> _getUser(Future<AuthEntity> fn) async {
   try {
     final user = await fn;
     return Right(user);

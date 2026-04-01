@@ -1,17 +1,17 @@
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/error/app_exceptions.dart';
-import 'package:lux_estate/features/auth/data/model/user_model.dart';
+import 'package:lux_estate/features/auth/data/model/Auth_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<UserModel> signIn({required String email, required String password});
-  Future<UserModel> signUp({
+  Future<AuthModel> signIn({required String email, required String password});
+  Future<AuthModel> signUp({
     required String email,
     required String password,
     required String fullName,
   });
   Future<void> signOut();
-  Future<UserModel?> getCurrentUser();
+  Future<AuthModel?> getCurrentUser();
 }
 
 @LazySingleton(as: AuthRemoteDataSource)
@@ -22,7 +22,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl(this._client);
 
   @override
-  Future<UserModel> signUp({
+  Future<AuthModel> signUp({
     required String email,
     required String password,
     required String fullName,
@@ -35,7 +35,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.user == null) {
       return throw ServerException('Sign-up failed: No user returned');
     }
-    var user = UserModel.fromJson(response.user!.toJson());
+    var user = AuthModel.fromJson(response.user!.toJson());
     user = user.copyWith(
       fullName: response.user!.userMetadata?['fullName'] ?? '',
     );
@@ -43,7 +43,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> signIn({
+  Future<AuthModel> signIn({
     required String email,
     required String password,
   }) async {
@@ -54,7 +54,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.user == null) {
       return throw ServerException('Sign-in failed: No user returned');
     }
-    var user = UserModel.fromJson(response.user!.toJson());
+    var user = AuthModel.fromJson(response.user!.toJson());
     user = user.copyWith(
       fullName: response.user!.userMetadata?['fullName'] ?? '',
     );
@@ -67,13 +67,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel?> getCurrentUser() async {
+  Future<AuthModel?> getCurrentUser() async {
     final session = _client.auth.currentSession;
     if (session == null) {
       return throw ServerException('No current user');
     }
 
-    var user = UserModel.fromJson(session.user.toJson());
+    var user = AuthModel.fromJson(session.user.toJson());
     user = user.copyWith(
       fullName: session.user.userMetadata?['fullName'] ?? '',
     );

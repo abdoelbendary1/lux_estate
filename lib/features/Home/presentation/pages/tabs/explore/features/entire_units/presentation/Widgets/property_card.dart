@@ -50,18 +50,18 @@ class PropertyCard extends StatelessWidget {
               ),
             ),
 
-            Visibility(
-              visible: !isDataVisible,
-              child: Expanded(
-                flex: 1,
-                child: BuildAppButton(
-                  curvedTop: false,
-                  onTap: viewUnitDetails,
-                  actionText: LocaleKeys.explore_details.tr(),
-                  trailingIcon: Icons.arrow_forward,
-                ),
-              ),
-            ),
+            // Visibility(
+            //   visible: !isDataVisible,
+            //   child: Expanded(
+            //     flex: 1,
+            //     child: BuildAppButton(
+            //       curvedTop: false,
+            //       onTap: viewUnitDetails,
+            //       actionText: LocaleKeys.explore_details.tr(),
+            //       trailingIcon: Icons.arrow_forward,
+            //     ),
+            //   ),
+            // ),
             PriceInfoSection(
               isVisible: isDataVisible,
               propertyUnit: propertyUnit,

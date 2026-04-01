@@ -9,7 +9,6 @@ import 'package:lux_estate/core/utils/property_card/empty_property_card.dart';
 import 'package:lux_estate/core/utils/property_card/property_card_shimmer.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/recomended_units/recommended_units_bloc.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/widgets/loaded_card.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/shared_spaces/presentation/widgets/build_success_shared_recommendations.dart';
 import 'package:lux_estate/generated/locale_keys.g.dart';
 
