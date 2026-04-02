@@ -44,10 +44,11 @@ class PropertyDM extends PropertyUnitEntity {
       imageUrl: json['image_url'],
       description: json['description'],
       unitType: json['unit_type'],
-      // هنا السحر: بنحول الـ Nested Maps لموديلات فرعية
-      location: json['locations'] != null
-          ? LocationDM.fromJson(json['locations'])
-          : null,
+
+      // التعديل هنا: بنبعت الـ json الكامل للـ LocationDM
+      location: LocationDM.fromJson(json),
+
+      // الجداول المربوطة (Foreign Keys) بتفضل زي ما هي لأنها بترجع كـ Nested Map فعلاً
       unitCategory: json['unit_categories'] != null
           ? UnitCategoryDM.fromJson(json['unit_categories'])
           : null,
@@ -58,10 +59,11 @@ class PropertyDM extends PropertyUnitEntity {
           ? OwnerDM.fromJson(json['profiles'])
           : null,
     );
-  } // --- To JSON ---
-  // بنحول الموديل لـ Map عشان نبعته لسوبابيز (Snake Case)
+  }
+
+  @override
   Map<String, dynamic> toJson() {
-    return {
+    final Map<String, dynamic> data = {
       'name': name,
       'bed_count': bedCount,
       'bath_count': bathCount,
@@ -73,13 +75,17 @@ class PropertyDM extends PropertyUnitEntity {
       'image_url': imageUrl,
       'description': description,
       'unit_type': unitType,
-      'category_id': unitCategory?.id, // بنبعت الـ ID بس للربط
+      'category_id': unitCategory?.id,
       'developer_id': developer?.id,
       'owner_id': owner?.id,
-      'location_name': location?.name,
-      'latitude': location?.latitude,
-      'longitude': location?.longitude,
     };
+
+    // دمج الـ JSON بتاع اللوكيشن مع الداتا الأساسية
+    if (location != null) {
+      data.addAll((location as LocationDM).toJson());
+    }
+
+    return data;
   }
 
   // --- Copy With ---
