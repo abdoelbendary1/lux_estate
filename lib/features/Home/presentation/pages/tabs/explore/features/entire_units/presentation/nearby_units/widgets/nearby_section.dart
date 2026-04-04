@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lux_estate/core/async/async_view_builder.dart';
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/core/extentions/widget_padding.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
@@ -45,7 +46,7 @@ class NearbySection extends StatelessWidget {
               onEmpty: _buildEmptyUI(),
               onSuccess: (units) => _buildSuccessUI(units),
               onRetry: () => context.read<NearbyUnitsBloc>().add(
-                LoadNearbyUnitsEvent(lat: '', lang: ''),
+                LoadNearbyUnitsEvent(lat: '', lang: '',category: PropertyCategories.values.first ),
               ),
             ),
           ],
@@ -60,7 +61,7 @@ class NearbySection extends StatelessWidget {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 3,
+        itemCount: units.length<=3?units.length:3,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => context.pushNamed(

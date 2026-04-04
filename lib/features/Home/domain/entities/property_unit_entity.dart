@@ -6,7 +6,8 @@ import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.da
 
 class PropertyUnitEntity extends Equatable {
   final String? id;
-  final String? name;
+  final String? enName;  final String? arName;
+
   final num? bedCount;
   final num? bathCount;
   final bool? isAvailable;
@@ -22,13 +23,15 @@ class PropertyUnitEntity extends Equatable {
   final String? unitType;
   final String? unitList;
   final String? unitTag;
-  final UnitCategoryEntity? unitCategory;
-  final DeveloperEntity? developer;
-  final OwnerEntity? owner;
+  final String? categoryId;
+  final String? developerId;
+  final String? ownerId;
+  final String? createdAt;
 
   const PropertyUnitEntity({
     this.id,
-    this.name,
+    this.enName,
+    this.arName,  
     this.bedCount,
     this.bathCount,
     this.isAvailable,
@@ -40,13 +43,14 @@ class PropertyUnitEntity extends Equatable {
     this.price,
     this.imageUrl,
     this.description,
-    this.developer,
-    this.owner,
+    this.developerId,
+    this.ownerId,
     this.location,
     this.unitType,
     this.unitList,
     this.unitTag,
-    this.unitCategory,
+    this.categoryId,
+    this.createdAt,
   });
 
   @override

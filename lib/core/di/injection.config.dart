@@ -40,6 +40,8 @@ import 'package:lux_estate/features/auth/presentation/controller/bloc/auth_bloc.
     as _i321;
 import 'package:lux_estate/features/Home/data/datasource/home_page_mockup_data_source.dart'
     as _i272;
+import 'package:lux_estate/features/Home/data/datasource/home_page_remote_data_source.dart'
+    as _i413;
 import 'package:lux_estate/features/Home/data/repo_impl/home_page_repo_impl.dart'
     as _i551;
 import 'package:lux_estate/features/Home/domain/repo/Home_page_repo.dart'
@@ -66,6 +68,12 @@ import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/domain/
     as _i688;
 import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/presentation/bloc/profile_bloc.dart'
     as _i458;
+import 'package:lux_estate/features/search/data/repo_impl/search_repo_impl.dart'
+    as _i648;
+import 'package:lux_estate/features/search/domain/repo/search_repo.dart'
+    as _i857;
+import 'package:lux_estate/features/search/domain/usecase/search_property.dart'
+    as _i330;
 import 'package:lux_estate/features/search/presentation/bloc/filter/filter_cubit.dart'
     as _i320;
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart'
@@ -104,9 +112,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1010.AuthRemoteDataSource>(
       () => _i1010.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i499.HomePageRepository>(
-      () => _i551.HomePageRepoImpl(
-        mockupDataSource: gh<_i272.HomePageMockupDataSource>(),
+    gh.lazySingleton<_i413.HomePageRemoteDataSource>(
+      () => _i413.HomePageRemoteDataSourceImpl(
+        supabaseClient: gh<_i454.SupabaseClient>(),
       ),
     );
     gh.lazySingleton<_i942.AuthRepository>(
@@ -121,11 +129,39 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i436.UserSignUp>(
       () => _i436.UserSignUp(gh<_i942.AuthRepository>()),
     );
+    gh.lazySingleton<_i857.SearchRepo>(
+      () => _i648.SearchRepoImpl(
+        remoteDataSource: gh<_i413.HomePageRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i688.GetProfile>(
       () => _i688.GetProfile(gh<_i58.ProfileRepo>()),
     );
     gh.factory<_i458.ProfileBloc>(
       () => _i458.ProfileBloc(getProfileUseCase: gh<_i688.GetProfile>()),
+    );
+    gh.lazySingleton<_i499.HomePageRepository>(
+      () => _i551.HomePageRepoImpl(
+        mockupDataSource: gh<_i272.HomePageMockupDataSource>(),
+        remoteDataSource: gh<_i413.HomePageRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i545.UserLogin>(
+      () => _i545.UserLogin(authRepository: gh<_i942.AuthRepository>()),
+    );
+    gh.singleton<_i775.SessionCubit>(
+      () => _i775.SessionCubit(gh<_i559.CurrentUser>()),
+    );
+    gh.factory<_i330.SearchProperty>(
+      () => _i330.SearchProperty(searchRepo: gh<_i857.SearchRepo>()),
+    );
+    gh.factory<_i321.AuthBloc>(
+      () => _i321.AuthBloc(
+        userLogin: gh<_i545.UserLogin>(),
+        userSignUp: gh<_i436.UserSignUp>(),
+        currentUser: gh<_i559.CurrentUser>(),
+        logoutUser: gh<_i534.LogoutUser>(),
+      ),
     );
     gh.factory<_i250.GetNearbyUntits>(
       () => _i250.GetNearbyUntits(gh<_i499.HomePageRepository>()),
@@ -136,37 +172,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i713.GetUnitsByCategory>(
       () => _i713.GetUnitsByCategory(gh<_i499.HomePageRepository>()),
     );
-    gh.factory<_i545.UserLogin>(
-      () => _i545.UserLogin(authRepository: gh<_i942.AuthRepository>()),
-    );
     gh.factory<_i1065.RecentlyAddedUnitsBloc>(
       () => _i1065.RecentlyAddedUnitsBloc(
         getRecentUnits: gh<_i508.GetRecentUnits>(),
       ),
     );
-    gh.singleton<_i775.SessionCubit>(
-      () => _i775.SessionCubit(gh<_i559.CurrentUser>()),
+    gh.singleton<_i1020.AppRouter>(
+      () => _i1020.AppRouter(gh<_i775.SessionCubit>()),
     );
     gh.factory<_i647.SearchBloc>(
-      () =>
-          _i647.SearchBloc(getUnitsByCategory: gh<_i713.GetUnitsByCategory>()),
-    );
-    gh.factory<_i321.AuthBloc>(
-      () => _i321.AuthBloc(
-        userLogin: gh<_i545.UserLogin>(),
-        userSignUp: gh<_i436.UserSignUp>(),
-        currentUser: gh<_i559.CurrentUser>(),
-        logoutUser: gh<_i534.LogoutUser>(),
-      ),
+      () => _i647.SearchBloc(searchProperty: gh<_i330.SearchProperty>()),
     );
     gh.factory<_i310.NearbyUnitsBloc>(
       () => _i310.NearbyUnitsBloc(getNearbyUntits: gh<_i250.GetNearbyUntits>()),
     );
     gh.factory<_i263.RecommendedUnitsBloc>(
       () => _i263.RecommendedUnitsBloc(gh<_i713.GetUnitsByCategory>()),
-    );
-    gh.singleton<_i1020.AppRouter>(
-      () => _i1020.AppRouter(gh<_i775.SessionCubit>()),
     );
     return this;
   }

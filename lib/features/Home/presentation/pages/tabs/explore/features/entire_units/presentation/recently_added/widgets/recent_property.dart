@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/core/extentions/unit_formatter.dart';
 import 'package:lux_estate/core/extentions/widget_padding.dart'; // الـ Extensions بتاعتك
 import 'package:lux_estate/core/helpers/helpers.dart';
@@ -17,27 +20,37 @@ class RecentPropertyTile extends StatelessWidget {
     // 1. استخدام الـ Theme لتقليل التكرار
     final textTheme = Theme.of(context).textTheme;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // --- Image Section ---
-        _buildImage(),
+    return BlocBuilder<LocaleCubit, Locale>(
+      builder: (context, state) {
+        final name = state == Locale.fromSubtags(languageCode: "ar") ? unit.arName : unit.enName;
+            final locationName = state == Locale.fromSubtags(languageCode: "ar") ? unit.location?.arName : unit.location?.enName;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // --- Image Section ---
+            _buildImage(),
 
-        16.horizontalSpace, // استخدام Spacer Extension
-        // --- Details Section ---
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildCategoryAndPrice(unit.formattedPriceCompact, textTheme),
-              8.verticalSpace,
-              _buildPropertyName(textTheme),
-              4.verticalSpace,
-              _buildLocation(textTheme),
-            ],
-          ),
-        ),
-      ],
+            16.horizontalSpace, // استخدام Spacer Extension
+            // --- Details Section ---
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildCategoryAndPrice(
+                    context,
+                    unit.formattedPriceCompact,
+                    textTheme,
+                  ),
+                  8.verticalSpace,
+                  _buildPropertyName(textTheme, name??""),
+                  4.verticalSpace,
+                  _buildLocation(textTheme, locationName??""),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     ).mOnly(b: 20.h); // استخدام Margin Extension بتاعك
   }
 
@@ -55,7 +68,11 @@ class RecentPropertyTile extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryAndPrice(String price, TextTheme textTheme) {
+  Widget _buildCategoryAndPrice(
+    BuildContext context,
+    String price,
+    TextTheme textTheme,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -63,11 +80,14 @@ class RecentPropertyTile extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
           decoration: BoxDecoration(
-            color: getListColor(unit.unitCategory?.id ?? "1").withOpacity(0.1),
+            color: getListColor(unit.categoryId ?? "1").withOpacity(0.1),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Text(
-            unit.unitCategory?.name ?? "Apartment",
+            PropertyCategories.values
+                    .firstWhere((element) => element.id == unit.categoryId)
+                    .getLocalizedName(context) ??
+                "Apartment",
             style: textTheme.labelSmall?.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.bold,
@@ -91,9 +111,9 @@ class RecentPropertyTile extends StatelessWidget {
     );
   }
 
-  Widget _buildPropertyName(TextTheme textTheme) {
+  Widget _buildPropertyName(TextTheme textTheme ,String name) {
     return Text(
-      unit.name ?? "",
+      name ,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: textTheme.titleMedium?.copyWith(
@@ -103,14 +123,14 @@ class RecentPropertyTile extends StatelessWidget {
     );
   }
 
-  Widget _buildLocation(TextTheme textTheme) {
+  Widget _buildLocation(TextTheme textTheme, String location) {
     return Row(
       children: [
         Icon(Icons.location_on_outlined, size: 14.sp, color: AppColors.grey),
         4.horizontalSpace,
         Expanded(
           child: Text(
-            unit.location?.name ?? "",
+            location  ,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: textTheme.bodySmall?.copyWith(color: AppColors.grey),

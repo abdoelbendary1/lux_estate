@@ -25,10 +25,12 @@ class FullResidencesTab extends StatelessWidget {
           ),
         );
         context.read<RecentlyAddedUnitsBloc>().add(
-          LoadRecentlyAddedUnitsEvent(),
+          LoadRecentlyAddedUnitsEvent(
+            category: PropertyCategories.values.first,
+          ),
         );
         context.read<NearbyUnitsBloc>().add(
-          LoadNearbyUnitsEvent(lat: '30.0570', lang: '31.3310'),
+          LoadNearbyUnitsEvent(lat: '30.0570', lang: '31.3310', category: PropertyCategories.values.first),
         );
         await Future.delayed(const Duration(milliseconds: 800));
       },

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lux_estate/core/async/async_view_builder.dart';
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/core/extentions/widget_padding.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
@@ -41,7 +42,7 @@ class RecentlyAddedSection extends StatelessWidget {
               onEmpty: _buildEmptyUI(),
               onSuccess: (units) => _buildSuccess(units),
               onRetry: () => context.read<RecentlyAddedUnitsBloc>().add(
-                LoadRecentlyAddedUnitsEvent(),
+                LoadRecentlyAddedUnitsEvent( category: PropertyCategories .values.first,),
               ),
             ),
           ],
@@ -80,7 +81,8 @@ class RecentlyAddedSection extends StatelessWidget {
     return ListView.builder(
       shrinkWrap: true, // Crucial: Tells ListView to take only needed space
       physics: const NeverScrollableScrollPhysics(), // Let the parent scroll
-      itemCount: 3,
+      itemCount: units.length <= 3 ? units.length : 3
+      ,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () =>
             context.pushNamed(AppRoutes.detailsScreenName, extra: units[index]),

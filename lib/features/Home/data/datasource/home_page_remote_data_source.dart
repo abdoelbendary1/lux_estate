@@ -1,42 +1,90 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:lux_estate/core/error/failuers.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'package:lux_estate/features/Home/data/model/property_DM.dart';
 
 abstract class HomePageRemoteDataSource {
-  Future<Either<Failures, List<PropertyDM>>> getPropertiesByCategory({
-    required int categoryId,
+  Future< List<PropertyDM>> getPropertiesByCategory({
+    required String categoryId,
   });
 
-/*************  ✨ Windsurf Command ⭐  *************/
-/*******  646384c4-83b2-41c4-abc8-6443158fe22b  *******/
-  Future<Either<Failures, List<PropertyDM>>> getPropertiesByLocation({
+  Future< List<PropertyDM>> getPropertiesByLocation({
     required String lat,
-    required String lang,
+    required String lang,    required String categoryId,
+
   });
-  Future<Either<Failures, List<PropertyDM>>> searchProperties({String? query});
+  Future< List<PropertyDM>> searchProperties({String? query,    required String categoryId,
+});
+  Future< List<PropertyDM>> getRecentlyAddedUnits({required String categoryId,});
 }
-
+@LazySingleton(as: HomePageRemoteDataSource)
 class HomePageRemoteDataSourceImpl implements HomePageRemoteDataSource {
+  final SupabaseClient supabaseClient;
+
+  HomePageRemoteDataSourceImpl({
+    required this.supabaseClient,
+  });
+
   @override
-  Future<Either<Failures, List<PropertyDM>>> getPropertiesByCategory({
-    required int categoryId,
-  }) {
-    // TODO: implement getPropertiesByCategory
-    throw UnimplementedError();
+  Future<List<PropertyDM>> getPropertiesByCategory({
+    required String categoryId,
+  }) async {
+    // Select all columns where category_id matches
+   final result = await supabaseClient
+    .from("properties")
+    .select('*, location_text') // بننادي على الفانكشن كأنها عمود عادي
+    .eq("category_id", categoryId);
+
+    return result.map((e) => PropertyDM.fromJson(e)).toList();
   }
 
   @override
-  Future<Either<Failures, List<PropertyDM>>> getPropertiesByLocation({
+  Future<List<PropertyDM>> getPropertiesByLocation({
     required String lat,
     required String lang,
-  }) {
-    // TODO: implement getPropertiesByLocation
-    throw UnimplementedError();
+        required String categoryId,
+
+  }) async {
+    // We call a custom Postgres function named 'get_nearby_properties'
+    // You define this function in your Supabase SQL Editor
+    final List<dynamic> result = await supabaseClient.rpc(
+      'get_nearby_properties',
+      params: {
+        'user_lat': double.tryParse(lat),
+        'user_lng': double.tryParse(lang),
+        'max_dist_km': 5000, // Example: 5km radius
+      },
+    ).eq("category_id", categoryId);;
+
+    return result.map((e) => PropertyDM.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   @override
-  Future<Either<Failures, List<PropertyDM>>> searchProperties({String? query}) {
-    // TODO: implement searchProperties
-    throw UnimplementedError();
+  Future<List<PropertyDM>> searchProperties({String? query,    required String categoryId,
+}) async {
+    var request = supabaseClient.from("properties").select();
+
+    // Use ilike for case-insensitive partial matching (e.g., "villa" matches "Modern Villa")
+    if (query != null && query.isNotEmpty) {
+request = request.or(
+    'en_name.ilike.%$query%,'
+    'ar_name.ilike.%$query%,'
+    'en_location_name.ilike.%$query%,'
+    'ar_location_name.ilike.%$query%'
+).eq("category_id", categoryId);    }
+
+    final List<Map<String, dynamic>> result = await request;
+
+    return result.map((e) => PropertyDM.fromJson(e)).toList();
+  }
+@override
+  Future< List<PropertyDM>> getRecentlyAddedUnits({required String categoryId,}) async {
+    final List<Map<String, dynamic>> result = await supabaseClient
+        .from("properties")
+        .select().eq("category_id", categoryId)
+        .order('created_at', ascending: false)
+        .limit(5);
+    return result.map((e) => PropertyDM.fromJson(e)).toList();
   }
 }

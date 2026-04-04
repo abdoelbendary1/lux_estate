@@ -5,6 +5,8 @@ import 'package:lux_estate/core/cubits/swipe_card_animation/cubit/swipe_cards_an
 import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/core/extentions/widget_padding.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/bloc/nearbyUnits/nearby_units_bloc.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/bloc/recentlyAdded/recently_added_units_bloc.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/recomended_units/recommended_units_bloc.dart';
 import 'package:lux_estate/core/utils/filter_chip.dart';
 
@@ -73,6 +75,11 @@ class _CategorySectionState extends State<CategorySection> {
                       context.read<RecommendedUnitsBloc>().add(
                         LoadPropertiesByCategoryEvent(category: category),
                       );
+                      context.read<RecentlyAddedUnitsBloc>().add(
+                        LoadRecentlyAddedUnitsEvent(category: category),);
+                        context.read<NearbyUnitsBloc>().add(
+                          LoadNearbyUnitsEvent(lat: '30.0570', lang: '31.3310',category: category),
+                        );
                       context.read<SwipeCardsAnimationCubit>().changeIndex(0);
                     },
                   );

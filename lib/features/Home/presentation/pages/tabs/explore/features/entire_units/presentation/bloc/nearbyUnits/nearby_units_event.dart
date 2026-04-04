@@ -6,5 +6,7 @@ sealed class NearbyUnitsEvent {}
 final class LoadNearbyUnitsEvent extends NearbyUnitsEvent {
   final String lat;
   final String lang;
-  LoadNearbyUnitsEvent({required this.lat, required this.lang});
+      final PropertyCategories category;
+
+  LoadNearbyUnitsEvent({required this.lat, required this.lang, required this.category});
 }

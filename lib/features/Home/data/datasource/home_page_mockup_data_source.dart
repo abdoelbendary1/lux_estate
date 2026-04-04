@@ -37,7 +37,7 @@ class HomePageMockupDataSourceImpl implements HomePageMockupDataSource {
 
       // Filtering by the unique ID defined in your enum
       final filteredProperties = allProperties
-          .where((unit) => unit.unitCategory?.id == category.id)
+          .where((unit) => unit.categoryId == category.id)
           .toList();
       return filteredProperties;
     } catch (e) {
@@ -560,17 +560,17 @@ class HomePageMockupDataSourceImpl implements HomePageMockupDataSource {
   }) {
     return PropertyDM(
       id: id,
-      name: name,
+      // name: name,
       bedCount: beds,
       bathCount: baths,
-      location: LocationDM(name: locationName, latitude: lat, longitude: lang),
+      // location: LocationDM(name: locationName, latitude: lat, longitude: lang),
       size: size,
       price: price,
       imageUrl: imageUrl,
-      unitCategory: UnitCategoryDM(
-        id: cat.index.toString(),
-        name: cat.name.toUpperCase(),
-      ),
+      // unitCategory: UnitCategoryDM(
+      //   id: cat.index.toString(),
+      //   name: cat.name.toUpperCase(),
+      // ),
       isAvailable: isAvailable,
       isSaved: isSaved,
       isFeatured: isFeatured,

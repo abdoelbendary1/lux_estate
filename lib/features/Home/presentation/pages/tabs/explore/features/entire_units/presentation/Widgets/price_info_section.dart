@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
 import 'package:lux_estate/core/extentions/unit_formatter.dart';
 import 'package:lux_estate/core/extentions/widget_padding.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
@@ -27,41 +29,48 @@ class PriceInfoSection extends StatelessWidget {
             CrossAxisAlignment.end, // Aligns price and text to bottom
         children: [
           // LEFT SIDE: Name and Location
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min, // Takes only space it needs
-              children: [
-                Text(
-                  propertyUnit.name ?? '',
-                  style: Theme.of(context).textTheme.titleMedium,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 4.h), // Consistent spacing instead of Spacer()
-                if (propertyUnit.location?.name != null)
-                  Row(
-                    // Horizontal layout for icon and text looks better in rows
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        color: AppColors.primary,
-                        size: 14.sp,
-                      ),
-                      SizedBox(width: 4.w),
-                      Expanded(
-                        child: Text(
-                          propertyUnit.location!.name!.toUpperCase(),
-                          style: Theme.of(context).textTheme.titleMedium,
+          BlocBuilder<LocaleCubit, Locale>(
+          builder: (context, state) {final name = state == Locale.fromSubtags(languageCode: "ar") ? propertyUnit.arName : propertyUnit.enName;
+            final locationName = state == Locale.fromSubtags(languageCode: "ar") ? propertyUnit.location?.arName : propertyUnit.location?.enName;
+              return Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min, // Takes only space it needs
+                  children: [
+                    Text(
+                      name ?? '',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ), // Consistent spacing instead of Spacer()
+                    if (locationName != null)
+                      Row(
+                        // Horizontal layout for icon and text looks better in rows
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: AppColors.primary,
+                            size: 14.sp,
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                            locationName.toUpperCase(),
+                              style: Theme.of(context).textTheme.titleMedium,
 
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-              ],
-            ),
+                  ],
+                ),
+              );
+            },
           ),
 
           SizedBox(width: 10.w), // Gap between info and price

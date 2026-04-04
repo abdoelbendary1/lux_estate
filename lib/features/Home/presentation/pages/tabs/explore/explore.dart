@@ -28,13 +28,13 @@ class ExploreTab extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               getIt<RecentlyAddedUnitsBloc>()
-                ..add(LoadRecentlyAddedUnitsEvent()),
+                ..add(LoadRecentlyAddedUnitsEvent( category: PropertyCategories.values.first,)),
         ),
         // 3. Logic for Nearby units (passing location if available)
         BlocProvider(
           create: (context) => getIt<NearbyUnitsBloc>()
             ..add(
-              LoadNearbyUnitsEvent(lat: '30.0570', lang: '31.3310'),
+              LoadNearbyUnitsEvent(lat: '30.0570', lang: '31.3310', category: PropertyCategories.values.first),
             ), // Example coords
         ),
       ],

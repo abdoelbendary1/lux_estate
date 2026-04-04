@@ -11,7 +11,7 @@ import 'package:lux_estate/features/Home/presentation/pages/tabs/chats/presentat
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/explore.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/nearby_units/nearby_units_list.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recently_added/recently_added_list.dart';
-import 'package:lux_estate/features/Home/presentation/pages/tabs/saved_units.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/presentation/saved_units.dart';
 import 'package:lux_estate/features/Home/presentation/pages/layout_bottom_nav_bar.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/presentation/pages/settings.dart';
 import 'package:lux_estate/features/auth/presentation/pages/login_page.dart';

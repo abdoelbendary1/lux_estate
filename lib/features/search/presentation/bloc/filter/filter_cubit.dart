@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
 
 part 'filter_state.dart';
 

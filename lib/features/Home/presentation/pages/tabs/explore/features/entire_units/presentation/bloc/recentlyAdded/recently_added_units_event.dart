@@ -4,5 +4,7 @@ part of 'recently_added_units_bloc.dart';
 sealed class RecentlyAddedUnitsEvent {}
 
 final class LoadRecentlyAddedUnitsEvent extends RecentlyAddedUnitsEvent {
-  LoadRecentlyAddedUnitsEvent();
+  final      PropertyCategories category;
+
+  LoadRecentlyAddedUnitsEvent( {required this.category});
 }

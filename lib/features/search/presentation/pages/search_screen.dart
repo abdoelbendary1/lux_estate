@@ -148,7 +148,7 @@ class SearchScreen extends StatelessWidget {
                     child: SearchSection(
                       autoFocus: true,
                       onSubmitted: (query) => context.read<SearchBloc>().add(
-                        PerformSearch(query: query),
+                        PerformSearch(query: query ,category: state.filteredCategories?.first),
                       ),
                       onFilterTapped: () => _openFilter(context),
                     ),

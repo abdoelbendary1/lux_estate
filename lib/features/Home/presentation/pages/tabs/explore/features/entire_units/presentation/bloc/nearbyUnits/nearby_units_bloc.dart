@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/async/async_state.dart';
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/domain/usecase/GetNearbyUntits.dart';
 import 'package:meta/meta.dart';
@@ -29,6 +30,7 @@ class NearbyUnitsBloc extends Bloc<NearbyUnitsEvent, NearbyUnitsState> {
     final result = await _getNearbyUntits.execute(
       lat: event.lat,
       lang: event.lang,
+      category: event.category,
     );
     result.fold(
       (l) => emit(NearbyUnitsState(nearbyUnitsStatus: DataFailed(l.message!))),

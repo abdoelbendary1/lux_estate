@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
 import 'package:lux_estate/core/extentions/unit_formatter.dart';
 import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
@@ -57,42 +59,48 @@ class NearbyCard extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.all(AppSizes.paddingS.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              unit.name ?? "",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            Row(
+        child: BlocBuilder<LocaleCubit, Locale>(
+          builder: (context, state) {
+            final name = state == Locale.fromSubtags(languageCode: "ar") ? unit.arName : unit.enName;
+            final locationName = state == Locale.fromSubtags(languageCode: "ar") ? unit.location?.arName : unit.location?.enName;
+            return Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    unit.location?.name ?? "",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
                 Text(
-                  unit.formattedPriceFull, // استخدام الـ Extension بتاعك
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.accentBlue,
+                  name ?? "",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        locationName ?? "",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      unit.formattedPriceFull, // استخدام الـ Extension بتاعك
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.accentBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

@@ -1,18 +1,14 @@
-import 'package:lux_estate/features/Home/data/model/developer_DM.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:lux_estate/features/Home/data/model/location_DM.dart';
-import 'package:lux_estate/features/Home/data/model/owner_DM.dart';
-import 'package:lux_estate/features/Home/data/model/unit_category_DM.dart';
-import 'package:lux_estate/features/Home/domain/entities/developer_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/location_entity.dart';
-import 'package:lux_estate/features/Home/domain/entities/owener_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
-import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.dart';
 // استورد باقي الموديلات (LocationModel, OwnerModel, etc.)
 
 class PropertyDM extends PropertyUnitEntity {
   const PropertyDM({
     super.id,
-    super.name,
+    super.enName,
+    super.arName,
     super.bedCount,
     super.bathCount,
     super.isAvailable,
@@ -25,15 +21,24 @@ class PropertyDM extends PropertyUnitEntity {
     super.description,
     super.location,
     super.unitType,
-    super.unitCategory,
-    super.developer,
-    super.owner,
+    super.categoryId,
+    super.createdAt,
+    super.developerId,
+    super.ownerId,
+    super.isMatched,
+    super.unitList,
+    super.unitTag,
   });
 
   factory PropertyDM.fromJson(Map<String, dynamic> json) {
+  DateTime date = DateTime.parse(json['created_at']);
+
+// 2. لو عايز ترجعها لـ String بالتنسيق بتاعك (اختياري)
+String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(date);
     return PropertyDM(
       id: json['id'],
-      name: json['name'],
+      enName: json['en_name'],
+      arName: json['ar_name'],
       bedCount: json['bed_count'],
       bathCount: json['bath_count'],
       isAvailable: json['is_available'],
@@ -49,22 +54,18 @@ class PropertyDM extends PropertyUnitEntity {
       location: LocationDM.fromJson(json),
 
       // الجداول المربوطة (Foreign Keys) بتفضل زي ما هي لأنها بترجع كـ Nested Map فعلاً
-      unitCategory: json['unit_categories'] != null
-          ? UnitCategoryDM.fromJson(json['unit_categories'])
-          : null,
-      developer: json['developers'] != null
-          ? DeveloperDM.fromJson(json['developers'])
-          : null,
-      owner: json['profiles'] != null
-          ? OwnerDM.fromJson(json['profiles'])
-          : null,
+     categoryId: json['category_id'],
+     developerId: json['developer_id'],
+     ownerId: json['owner_id'],
+     createdAt: formattedDate,
     );
   }
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
-      'name': name,
+      'en_name': enName,
+      'ar_name': arName,
       'bed_count': bedCount,
       'bath_count': bathCount,
       'is_available': isAvailable,
@@ -75,9 +76,9 @@ class PropertyDM extends PropertyUnitEntity {
       'image_url': imageUrl,
       'description': description,
       'unit_type': unitType,
-      'category_id': unitCategory?.id,
-      'developer_id': developer?.id,
-      'owner_id': owner?.id,
+      'category_id': categoryId,
+      'developer_id': developerId,
+      'owner_id': ownerId,
     };
 
     // دمج الـ JSON بتاع اللوكيشن مع الداتا الأساسية
@@ -92,7 +93,8 @@ class PropertyDM extends PropertyUnitEntity {
   // لتوليد نسخة جديدة مع تغيير حقول معينة (مهم جداً للـ Bloc)
   PropertyDM copyWith({
     String? id,
-    String? name,
+    String? enName,
+    String? arName,
     num? bedCount,
     num? bathCount,
     bool? isAvailable,
@@ -105,13 +107,14 @@ class PropertyDM extends PropertyUnitEntity {
     String? description,
     LocationEntity? location,
     String? unitType,
-    UnitCategoryEntity? unitCategory,
-    DeveloperEntity? developer,
-    OwnerEntity? owner,
+    String? categoryId,
+    String? developerId,
+    String? ownerId,
   }) {
     return PropertyDM(
       id: id ?? this.id,
-      name: name ?? this.name,
+     enName: enName ?? this.enName,
+      arName: arName ?? this.arName,
       bedCount: bedCount ?? this.bedCount,
       bathCount: bathCount ?? this.bathCount,
       isAvailable: isAvailable ?? this.isAvailable,
@@ -124,9 +127,9 @@ class PropertyDM extends PropertyUnitEntity {
       description: description ?? this.description,
       location: location ?? this.location,
       unitType: unitType ?? this.unitType,
-      unitCategory: unitCategory ?? this.unitCategory,
-      developer: developer ?? this.developer,
-      owner: owner ?? this.owner,
+      categoryId: categoryId ?? this.categoryId,
+      developerId: developerId ?? this.developerId,
+      ownerId: ownerId ?? this.ownerId,
     );
   }
 }

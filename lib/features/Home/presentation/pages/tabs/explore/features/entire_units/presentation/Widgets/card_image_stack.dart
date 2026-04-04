@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/core/utils/property_card/build_unit_image.dart';
@@ -56,51 +58,61 @@ class _CardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          propertyUnit.name ?? "The Helix Penthouse",
-          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        AppSizes.spaceS.verticalSpace,
-        Row(
+    return  BlocBuilder<LocaleCubit, Locale>(
+          builder: (context, state) {final name = state == Locale.fromSubtags(languageCode: "ar") ? propertyUnit.arName : propertyUnit.enName;
+            final locationName = state == Locale.fromSubtags(languageCode: "ar") ? propertyUnit.location?.arName : propertyUnit.location?.enName;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.location_on_outlined, color: Colors.white, size: 18.sp),
-            SizedBox(width: 4.w),
-            Expanded(
-              child: Text(
-                propertyUnit.location?.name ?? "New Cairo, District 5",
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+            Text(
+            name ?? "The Helix Penthouse",
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            AppSizes.spaceS.verticalSpace,
+            Row(
+              children: [
+                Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.white,
+                  size: 18.sp,
+                ),
+                SizedBox(width: 4.w),
+                Expanded(
+                  child: Text(
+                    locationName ?? "New Cairo, District 5",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            AppSizes.spaceL.verticalSpace,
+            Row(
+              children: [
+                _InfoChip(
+                  label: "${propertyUnit.bedCount} ${LocaleKeys.bedrooms.tr()}",
+                  icon: Icons.bed_outlined,
+                ),
+                SizedBox(width: 8.w),
+                _InfoChip(
+                  label:
+                      "${propertyUnit.bathCount} ${LocaleKeys.bathrooms.tr()}",
+                  icon: Icons.bathtub_outlined,
+                ),
+                const Spacer(),
+                _ExploreDetailsBtn(),
+              ],
             ),
           ],
-        ),
-        AppSizes.spaceL.verticalSpace,
-        Row(
-          children: [
-            _InfoChip(
-              label: "${propertyUnit.bedCount} ${LocaleKeys.bedrooms.tr()}",
-              icon: Icons.bed_outlined,
-            ),
-            SizedBox(width: 8.w),
-            _InfoChip(
-              label: "${propertyUnit.bathCount} ${LocaleKeys.bathrooms.tr()}",
-              icon: Icons.bathtub_outlined,
-            ),
-            const Spacer(),
-            _ExploreDetailsBtn(),
-          ],
-        ),
-      ],
+        );
+      },
     );
   }
 }

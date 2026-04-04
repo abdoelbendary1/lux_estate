@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
 import 'package:lux_estate/core/helpers/helpers.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
@@ -21,6 +23,8 @@ class UnitDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.read<LocaleCubit>().state;
+     final locationName = locale == Locale.fromSubtags(languageCode: "ar") ? unit.location?.arName : unit.location?.enName; 
     String formattedPrice = NumberFormat('#,###').format(unit.price ?? 0);
     // Standard real estate screen layout
     return Scaffold(
@@ -38,11 +42,11 @@ class UnitDetailsScreen extends StatelessWidget {
                   AppSizes.spaceL.verticalSpace,
 
                   // 2. Main Image and Listing Title
-                  _buildImageSection(),
+                  _buildImageSection( locale),
                   AppSizes.spaceL.verticalSpace,
 
                   // 3. Location Text (Matches image position)
-                  _buildLocationRow(unit.location?.name ?? ""),
+                  _buildLocationRow(locationName ?? ""),
                   AppSizes.spaceM.verticalSpace,
 
                   // 4. Property Stats Row (Sq Ft, Beds, Baths)
@@ -58,12 +62,12 @@ class UnitDetailsScreen extends StatelessWidget {
                   AppSizes.spaceL.verticalSpace,
 
                   // 6. Developer Card
-                  GestureDetector(
-                    onTap: () => showAgentModal(context),
-                    child: _buildDeveloperCard(
-                      unit.developer ?? DeveloperEntity(),
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () => showAgentModal(context),
+                  //   child: _buildDeveloperCard(
+                  //     unit.developerId ?? "",
+                  //   ),
+                  // ),
                   AppSizes.spaceL.verticalSpace,
 
                   // 7. Price and Contact Options
@@ -87,7 +91,7 @@ class UnitDetailsScreen extends StatelessWidget {
     );
   }
 
-  ClipRRect _buildImageSection() {
+  ClipRRect _buildImageSection(Locale locale) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20.r),
       child: Stack(
@@ -99,7 +103,7 @@ class UnitDetailsScreen extends StatelessWidget {
             child: buildPropertyImage(unit.imageUrl),
           ),
           // exclusive listing tag and title overlay
-          _buildListingHeader(unit),
+          _buildListingHeader(unit, locale),
         ],
       ),
     );
@@ -137,7 +141,9 @@ class UnitDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListingHeader(PropertyUnitEntity unit) {
+  Widget _buildListingHeader(PropertyUnitEntity unit ,Locale locale) {
+         final name = locale == Locale.fromSubtags(languageCode: "ar") ? unit.arName : unit.enName;
+
     return Container(
       padding: EdgeInsets.all(16.r),
       width: double.infinity,
@@ -155,12 +161,12 @@ class UnitDetailsScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
             decoration: BoxDecoration(
               color: getListColor(
-                unit.unitCategory?.id ?? "1",
+                unit.categoryId?? "1",
               ).withOpacity(0.2),
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
-              unit.unitCategory?.name ?? "",
+              unit.categoryId ?? "",
               style: TextStyle(
                 fontSize: 10.sp,
                 color: AppColors.greenTagText,
@@ -170,7 +176,7 @@ class UnitDetailsScreen extends StatelessWidget {
           ),
           SizedBox(height: 6.h),
           Text(
-            unit.name ?? "",
+            name ?? "",
             style: TextStyle(
               fontSize: 24.sp,
               color: AppColors.textWhite,

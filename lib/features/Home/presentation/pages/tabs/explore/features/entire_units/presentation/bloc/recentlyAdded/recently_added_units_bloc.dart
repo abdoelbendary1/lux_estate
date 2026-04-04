@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:lux_estate/core/async/async_state.dart';
+import 'package:lux_estate/core/enums/PropertyCategories.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
 import 'package:lux_estate/features/Home/domain/usecase/GetRecentUnits.dart';
 import 'package:meta/meta.dart';
@@ -29,7 +30,7 @@ class RecentlyAddedUnitsBloc
       // 1. Preserve state while loading
       emit(state.copyWith(unitsStatus: DataLoading()));
 
-      final result = await _getRecentUnits.execute();
+      final result = await _getRecentUnits.execute(  category: event.category,);
 
       result.fold(
         (failure) => emit(
