@@ -3,10 +3,14 @@ import 'package:lux_estate/features/Home/data/model/property_DM.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class FavoritesRemoteDataSource {
-  Future< List<PropertyDM>> getMyFavorites();
-  Future<void> toggleFavorite({required String propertyId, required String userId});
+  Future<List<PropertyDM>> getMyFavorites();
+  Future<bool> toggleFavorite({
+    required String propertyId,
+    required String userId,
+  });
 }
-@LazySingleton(as: FavoritesRemoteDataSource  )
+
+@LazySingleton(as: FavoritesRemoteDataSource)
 class FavoritesRemoteDataSourceImpl implements FavoritesRemoteDataSource {
   final SupabaseClient supabase;
 
@@ -24,8 +28,12 @@ class FavoritesRemoteDataSourceImpl implements FavoritesRemoteDataSource {
         .map((e) => PropertyDM.fromJson(e['properties']))
         .toList();
   }
+
   @override
-Future<bool> toggleFavorite({required String propertyId, required String userId}) async {
+  Future<bool> toggleFavorite({
+    required String propertyId,
+    required String userId,
+  }) async {
     // final userId = supabase.auth.currentUser!.id;
 
     // بنجرب نجيب الصف لو موجود
@@ -51,5 +59,4 @@ Future<bool> toggleFavorite({required String propertyId, required String userId}
       return false; // تم الحذف
     }
   }
-  
 }

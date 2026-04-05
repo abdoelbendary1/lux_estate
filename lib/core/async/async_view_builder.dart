@@ -6,7 +6,7 @@ class AsyncViewBuilder<T> extends StatelessWidget {
   final AsyncState<T> state;
   final Widget Function(T data) onSuccess;
   final Widget? loadingWidget;
-  final Widget? onEmpty; 
+  final Widget? onEmpty;
   final Widget? initialWidget; // Fixed typo from 'initalWidget'
   final VoidCallback onRetry;
 
@@ -25,31 +25,31 @@ class AsyncViewBuilder<T> extends StatelessWidget {
     // Using the power of Dart 3 pattern matching
     return switch (state) {
       DataInitial() => initialWidget ?? const SizedBox.shrink(),
-      
-      DataLoading() => loadingWidget ?? 
-          const Center(child: CircularProgressIndicator()),
-      
+
+      DataLoading() =>
+        loadingWidget ?? const Center(child: CircularProgressIndicator()),
+
       DataFailed(errorMessage: var message) => ErrorDisplay(
-          message: message ?? "An unexpected error occurred",
-          onRetry: onRetry,
-        ),
-      
+        message: message ?? "An unexpected error occurred",
+        onRetry: onRetry,
+      ),
+
       DataSuccess(data: var data) => _buildSuccess(data),
-      
+
       _ => const SizedBox.shrink(),
     };
   }
 
   Widget _buildSuccess(T? data) {
-    if (data == null) {
-      return onEmpty ?? const Center(child: Text('No data available.'));
+    if (data == null) return onEmpty ?? const SizedBox.shrink();
+
+    // Shadowing عشان الـ Type Promotion
+    final T nonNullData = data;
+
+    if (nonNullData is Iterable && nonNullData.isEmpty) {
+      return onEmpty ?? const SizedBox.shrink();
     }
 
-    // Safety check: only check .isEmpty if the data is actually a List
-    if (data is Iterable && data.isEmpty) {
-      return onEmpty ?? const Center(child: Text('No data available.'));
-    }
-
-    return onSuccess(data);
+    return onSuccess(nonNullData);
   }
 }

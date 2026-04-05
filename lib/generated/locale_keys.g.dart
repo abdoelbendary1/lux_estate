@@ -85,5 +85,9 @@ abstract class  LocaleKeys {
   static const spaces = 'spaces';
   static const favorites = 'favorites';
   static const saved = 'saved';
+  static const no_favorites = 'no_favorites';
+  static const explore = 'explore';
+  static const chats = 'chats';
+  static const profile = 'profile';
 
 }

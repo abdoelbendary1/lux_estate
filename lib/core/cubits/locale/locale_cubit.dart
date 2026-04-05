@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
+
 @injectable
 class LocaleCubit extends Cubit<Locale> {
   LocaleCubit() : super(const Locale('en'));
@@ -16,6 +17,7 @@ class LocaleCubit extends Cubit<Locale> {
     }
   }
 
+  void updateLocale(Locale newLocale) => emit(newLocale);
   void setArabic(BuildContext context) async {
     await context.setLocale(const Locale('ar'));
     emit(const Locale('ar'));

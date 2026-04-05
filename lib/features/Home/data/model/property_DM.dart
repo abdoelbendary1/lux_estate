@@ -31,10 +31,10 @@ class PropertyDM extends PropertyUnitEntity {
   });
 
   factory PropertyDM.fromJson(Map<String, dynamic> json) {
-  DateTime date = DateTime.parse(json['created_at']);
+    DateTime date = DateTime.parse(json['created_at']);
 
-// 2. لو عايز ترجعها لـ String بالتنسيق بتاعك (اختياري)
-String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(date);
+    // 2. لو عايز ترجعها لـ String بالتنسيق بتاعك (اختياري)
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(date);
     return PropertyDM(
       id: json['id'],
       enName: json['en_name'],
@@ -54,10 +54,10 @@ String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(date);
       location: LocationDM.fromJson(json),
 
       // الجداول المربوطة (Foreign Keys) بتفضل زي ما هي لأنها بترجع كـ Nested Map فعلاً
-     categoryId: json['category_id'],
-     developerId: json['developer_id'],
-     ownerId: json['owner_id'],
-     createdAt: formattedDate,
+      categoryId: json['category_id'],
+      developerId: json['developer_id'],
+      ownerId: json['owner_id'],
+      createdAt: formattedDate,
     );
   }
 
@@ -113,7 +113,7 @@ String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(date);
   }) {
     return PropertyDM(
       id: id ?? this.id,
-     enName: enName ?? this.enName,
+      enName: enName ?? this.enName,
       arName: arName ?? this.arName,
       bedCount: bedCount ?? this.bedCount,
       bathCount: bathCount ?? this.bathCount,

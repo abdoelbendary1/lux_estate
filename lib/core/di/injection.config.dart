@@ -58,6 +58,18 @@ import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/feature
     as _i1065;
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/recommended/recomended_units/recommended_units_bloc.dart'
     as _i263;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/data/data_source/favorites_remote_data_source.dart'
+    as _i283;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/data/repo_impl/faveorites_repo_impl.dart'
+    as _i814;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/domain/repo/favorites_repo.dart'
+    as _i747;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/domain/usecase/get_favorites_list.dart'
+    as _i1048;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/domain/usecase/toggle_favorites.dart'
+    as _i666;
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/presentation/bloc/favorites_bloc.dart'
+    as _i221;
 import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/data/data_source/profile_remote_data_source.dart'
     as _i1059;
 import 'package:lux_estate/features/Home/presentation/pages/tabs/profile/data/repo_impl/profile_repo_impl.dart'
@@ -109,6 +121,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i58.ProfileRepo>(
       () => _i872.ProfileRepoImpl(gh<_i1059.ProfileRemoteDataSource>()),
     );
+    gh.lazySingleton<_i283.FavoritesRemoteDataSource>(
+      () => _i283.FavoritesRemoteDataSourceImpl(
+        supabase: gh<_i454.SupabaseClient>(),
+      ),
+    );
     gh.lazySingleton<_i1010.AuthRemoteDataSource>(
       () => _i1010.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -129,10 +146,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i436.UserSignUp>(
       () => _i436.UserSignUp(gh<_i942.AuthRepository>()),
     );
+    gh.lazySingleton<_i747.FavoritesRepo>(
+      () => _i814.FavoritesRemoteDataSourceRepoImpl(
+        gh<_i283.FavoritesRemoteDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i857.SearchRepo>(
       () => _i648.SearchRepoImpl(
         remoteDataSource: gh<_i413.HomePageRemoteDataSource>(),
       ),
+    );
+    gh.factory<_i1048.GetFavoritesList>(
+      () => _i1048.GetFavoritesList(gh<_i747.FavoritesRepo>()),
+    );
+    gh.factory<_i666.ToggleFavorites>(
+      () => _i666.ToggleFavorites(gh<_i747.FavoritesRepo>()),
     );
     gh.factory<_i688.GetProfile>(
       () => _i688.GetProfile(gh<_i58.ProfileRepo>()),
@@ -151,6 +179,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i775.SessionCubit>(
       () => _i775.SessionCubit(gh<_i559.CurrentUser>()),
+    );
+    gh.factory<_i221.FavoritesBloc>(
+      () => _i221.FavoritesBloc(
+        getFavoritesList: gh<_i1048.GetFavoritesList>(),
+        toggleFavorites: gh<_i666.ToggleFavorites>(),
+      ),
     );
     gh.factory<_i330.SearchProperty>(
       () => _i330.SearchProperty(searchRepo: gh<_i857.SearchRepo>()),

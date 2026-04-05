@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:lux_estate/generated/locale_keys.g.dart';
 
 class Destinations {
   const Destinations({
@@ -21,12 +23,12 @@ final List<Destinations> appDestinations = [
   Destinations(
     selectedIcon: Icons.explore,
     unSelectedIcon: Icons.explore_outlined,
-    label: 'Explore',
+    label: LocaleKeys.explore.tr(),
   ),
   Destinations(
     selectedIcon: Icons.favorite,
     unSelectedIcon: Icons.favorite_border,
-    label: 'Saved',
+    label: LocaleKeys.saved.tr(),
   ),
   // Destinations(
   //   selectedIcon: Icons.people_alt,
@@ -36,12 +38,12 @@ final List<Destinations> appDestinations = [
   Destinations(
     selectedIcon: Icons.message_rounded,
     unSelectedIcon: Icons.message_outlined,
-    label: 'Chats',
+    label: LocaleKeys.chats.tr(),
   ),
   Destinations(
     selectedIcon: Icons.person,
     unSelectedIcon: Icons.person_outline,
-    label: 'Profile',
+    label: LocaleKeys.profile.tr(),
   ),
   // Destinations(icon: Icons.profile, label: 'Profile'),
 ];

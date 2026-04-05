@@ -1,12 +1,23 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lux_estate/features/Home/domain/entities/developer_entity.dart';
+import 'package:flutter/material.dart';
 import 'package:lux_estate/features/Home/domain/entities/location_entity.dart';
-import 'package:lux_estate/features/Home/domain/entities/owener_entity.dart';
-import 'package:lux_estate/features/Home/domain/entities/unit_category_entity.dart';
+
+extension PropertyUnitEntityExtension on PropertyUnitEntity {
+  String name(BuildContext context) =>
+      context.locale.languageCode == 'ar' ? arName ?? "" : enName ?? "";
+  String locationName(BuildContext context) {
+    if (location == null) return "";
+    return context.locale.languageCode == 'ar'
+        ? location!.arName ?? ""
+        : location!.enName ?? "";
+  }
+}
 
 class PropertyUnitEntity extends Equatable {
   final String? id;
-  final String? enName;  final String? arName;
+  final String? enName;
+  final String? arName;
 
   final num? bedCount;
   final num? bathCount;
@@ -31,7 +42,7 @@ class PropertyUnitEntity extends Equatable {
   const PropertyUnitEntity({
     this.id,
     this.enName,
-    this.arName,  
+    this.arName,
     this.bedCount,
     this.bathCount,
     this.isAvailable,

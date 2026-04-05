@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
 import 'package:lux_estate/core/enums/PropertyCategories.dart';
+import 'package:lux_estate/core/extentions/pick_lang.dart';
 import 'package:lux_estate/core/extentions/unit_formatter.dart';
 import 'package:lux_estate/core/extentions/widget_padding.dart'; // الـ Extensions بتاعتك
 import 'package:lux_estate/core/helpers/helpers.dart';
@@ -19,39 +18,33 @@ class RecentPropertyTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // 1. استخدام الـ Theme لتقليل التكرار
     final textTheme = Theme.of(context).textTheme;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // --- Image Section ---
+        _buildImage(),
 
-    return BlocBuilder<LocaleCubit, Locale>(
-      builder: (context, state) {
-        final name = state == Locale.fromSubtags(languageCode: "ar") ? unit.arName : unit.enName;
-            final locationName = state == Locale.fromSubtags(languageCode: "ar") ? unit.location?.arName : unit.location?.enName;
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // --- Image Section ---
-            _buildImage(),
-
-            16.horizontalSpace, // استخدام Spacer Extension
-            // --- Details Section ---
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildCategoryAndPrice(
-                    context,
-                    unit.formattedPriceCompact,
-                    textTheme,
-                  ),
-                  8.verticalSpace,
-                  _buildPropertyName(textTheme, name??""),
-                  4.verticalSpace,
-                  _buildLocation(textTheme, locationName??""),
-                ],
+        16.horizontalSpace, // استخدام Spacer Extension
+        // --- Details Section ---
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildCategoryAndPrice(
+                context,
+                unit.formattedPriceCompact(context),
+                textTheme,
               ),
-            ),
-          ],
-        );
-      },
-    ).mOnly(b: 20.h); // استخدام Margin Extension بتاعك
+              8.verticalSpace,
+              _buildPropertyName(textTheme, unit.name(context)),
+              4.verticalSpace,
+              _buildLocation(textTheme, unit.locationName(context)),
+            ],
+          ),
+        ),
+      ],
+    ).mOnly(b: 20.h);
+    ;
   }
 
   // ميثود منفصلة للصورة لتقليل الزحمة في الـ build
@@ -111,9 +104,9 @@ class RecentPropertyTile extends StatelessWidget {
     );
   }
 
-  Widget _buildPropertyName(TextTheme textTheme ,String name) {
+  Widget _buildPropertyName(TextTheme textTheme, String name) {
     return Text(
-      name ,
+      name,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: textTheme.titleMedium?.copyWith(
@@ -130,7 +123,7 @@ class RecentPropertyTile extends StatelessWidget {
         4.horizontalSpace,
         Expanded(
           child: Text(
-            location  ,
+            location,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: textTheme.bodySmall?.copyWith(color: AppColors.grey),

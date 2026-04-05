@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
+import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 import 'package:lux_estate/core/utils/app_button.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';

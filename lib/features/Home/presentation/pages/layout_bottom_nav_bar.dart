@@ -3,11 +3,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lux_estate/core/constants.dart';
 import 'package:lux_estate/core/cubits/bottom_navbar/bottom_navbar_cubit.dart';
+import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/router/destinations.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/presentation/bloc/favorites_bloc.dart';
 
 class LayoutBottomNavBar extends StatelessWidget {
   const LayoutBottomNavBar({super.key, required this.navigationShell});
@@ -15,54 +16,60 @@ class LayoutBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavbarVisibilityCubit, bool>(
-      builder: (context, state) {
-        return Scaffold(
-          // appBar: AppBar(
-          //   // toolbarHeight: 80.h,
-          //   shape: RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.only(
-          //       bottomLeft: Radius.circular(30.r),
-          //       bottomRight: Radius.circular(30.r),
-          //     ),
-          //   ),
-          //   // leading: Icon(Icons.menu, color: AppColors.textWhite, size: 28.sp),
-          //   // title: Text(
-          //   //   'LUXESTATE',
-          //   //   style: TextStyle(
-          //   //     color: AppColors.textWhite,
-          //   //     fontWeight: FontWeight.bold,
-          //   //     fontSize: 20.sp,
-          //   //   ),
-          //   // ),
-          // ),
-          resizeToAvoidBottomInset: false,
-          extendBody: true,
-          body: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is UserScrollNotification) {
-                if (notification.direction == ScrollDirection.reverse) {
-                  // scrolling down
-                  context.read<NavbarVisibilityCubit>().show();
-                } else if (notification.direction == ScrollDirection.forward) {
-                  // scrolling up
-                  context.read<NavbarVisibilityCubit>().hide();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<FavoritesBloc>(),),
+      ],
+      child: BlocBuilder<NavbarVisibilityCubit, bool>(
+        builder: (context, state) {
+          return Scaffold(
+            // appBar: AppBar(
+            //   // toolbarHeight: 80.h,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.only(
+            //       bottomLeft: Radius.circular(30.r),
+            //       bottomRight: Radius.circular(30.r),
+            //     ),
+            //   ),
+            //   // leading: Icon(Icons.menu, color: AppColors.textWhite, size: 28.sp),
+            //   // title: Text(
+            //   //   'LUXESTATE',
+            //   //   style: TextStyle(
+            //   //     color: AppColors.textWhite,
+            //   //     fontWeight: FontWeight.bold,
+            //   //     fontSize: 20.sp,
+            //   //   ),
+            //   // ),
+            // ),
+            resizeToAvoidBottomInset: false,
+            extendBody: true,
+            body: NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is UserScrollNotification) {
+                  if (notification.direction == ScrollDirection.reverse) {
+                    // scrolling down
+                    context.read<NavbarVisibilityCubit>().show();
+                  } else if (notification.direction ==
+                      ScrollDirection.forward) {
+                    // scrolling up
+                    context.read<NavbarVisibilityCubit>().hide();
+                  }
                 }
-              }
-              return true;
-            },
-            child: Stack(
-              children: [
-                navigationShell,
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: _SlidingNavBarWidget(navigationShell),
-                ),
-              ],
+                return true;
+              },
+              child: Stack(
+                children: [
+                  navigationShell,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: _SlidingNavBarWidget(navigationShell),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
+import 'package:lux_estate/core/extentions/pick_lang.dart';
 import 'package:lux_estate/core/extentions/unit_formatter.dart';
 import 'package:lux_estate/core/utils/property_card/build_unit_image.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
@@ -46,73 +47,65 @@ class SharedCardImageStack extends StatelessWidget {
         // 3. Top Right: Match Percentage Badge
         Positioned(top: 16.h, right: 16.w, child: _MatchBadge(percent: 92)),
 
-        // 4. Bottom Section: Info & Price
-        BlocBuilder<LocaleCubit, Locale>(
-          builder: (context, state) {final name = state == Locale.fromSubtags(languageCode: "ar") ? propertyUnit.arName : propertyUnit.enName;
-            final locationName = state == Locale.fromSubtags(languageCode: "ar") ? propertyUnit.location?.arName : propertyUnit.location?.enName;
-            return Positioned(
-              bottom: 20.h,
-              left: 20.w,
-              right: 20.w,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+        Positioned(
+          bottom: 20.h,
+          left: 20.w,
+          right: 20.w,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Title & Price Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  // Title & Price Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          name ?? "The Helix Penthouse",
-                          style: Theme.of(context).textTheme.headlineSmall
-                              ?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ),
-                      _PriceWidget(price: propertyUnit.formattedPriceFull),
-                    ],
+                  Expanded(
+                    child: Text(
+                      propertyUnit.name(context),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   ),
-                  SizedBox(height: 4.h),
+                  _PriceWidget(price: propertyUnit.formattedPriceFull(context)),
+                ],
+              ),
+              SizedBox(height: 4.h),
 
-                  // Location Row
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        color: Colors.white70,
-                        size: 14.sp,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        locationName ?? "New Cairo, District 5",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 13.sp,
-                        ),
-                      ),
-                    ],
+              // Location Row
+              Row(
+                children: [
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.white70,
+                    size: 14.sp,
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(width: 4.w),
+                  Text(
+                    propertyUnit.locationName(context),
 
-                  // Bottom Badges (Type & Rating)
-                  Row(
-                    children: [
-                      _InfoChip(
-                        label: propertyUnit.unitType ?? "Private Suite",
-                      ),
-                      SizedBox(width: 8.w),
-                      _InfoChip(label: "4.8", icon: Icons.star),
-                    ],
+                    style: TextStyle(color: Colors.white70, fontSize: 13.sp),
                   ),
                 ],
               ),
-            );
-          },
+              SizedBox(height: 16.h),
+
+              // Bottom Badges (Type & Rating)
+              Row(
+                children: [
+                  _InfoChip(label: propertyUnit.unitType ?? "Private Suite"),
+                  SizedBox(width: 8.w),
+                  _InfoChip(label: "4.8", icon: Icons.star),
+                ],
+              ),
+            ],
+          ),
         ),
+
+        // 4. Bottom Section: Info & Price
       ],
     );
   }

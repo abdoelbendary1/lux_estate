@@ -82,7 +82,11 @@
   "units": "UNITS",
   "spaces": "SPACES",
   "favorites": "FAVORITES",
-  "saved": "SAVED"
+  "saved": "SAVED",
+  "no_favorites": "No favorites",
+  "explore": "EXPLORE",
+  "chats": "Messages",
+  "profile": "PROFILE"
   
 
 }

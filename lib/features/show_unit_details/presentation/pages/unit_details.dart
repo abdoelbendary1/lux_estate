@@ -5,7 +5,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:lux_estate/core/cubits/locale/locale_cubit.dart';
+import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
+import 'package:lux_estate/core/di/injection.dart';
+import 'package:lux_estate/core/extentions/pick_lang.dart';
 import 'package:lux_estate/core/helpers/helpers.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
@@ -13,6 +15,7 @@ import 'package:lux_estate/core/utils/app_button.dart';
 import 'package:lux_estate/core/utils/property_card/build_unit_image.dart';
 import 'package:lux_estate/features/Home/domain/entities/developer_entity.dart';
 import 'package:lux_estate/features/Home/domain/entities/property_unit_entity.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/favorites/presentation/bloc/favorites_bloc.dart';
 
 // --- Theme and Const Colors (Matches Image) ---
 
@@ -23,8 +26,6 @@ class UnitDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.read<LocaleCubit>().state;
-     final locationName = locale == Locale.fromSubtags(languageCode: "ar") ? unit.location?.arName : unit.location?.enName; 
     String formattedPrice = NumberFormat('#,###').format(unit.price ?? 0);
     // Standard real estate screen layout
     return Scaffold(
@@ -42,11 +43,11 @@ class UnitDetailsScreen extends StatelessWidget {
                   AppSizes.spaceL.verticalSpace,
 
                   // 2. Main Image and Listing Title
-                  _buildImageSection( locale),
+                  _buildImageSection(context),
                   AppSizes.spaceL.verticalSpace,
 
                   // 3. Location Text (Matches image position)
-                  _buildLocationRow(locationName ?? ""),
+                  _buildLocationRow(unit.locationName(context)),
                   AppSizes.spaceM.verticalSpace,
 
                   // 4. Property Stats Row (Sq Ft, Beds, Baths)
@@ -91,7 +92,7 @@ class UnitDetailsScreen extends StatelessWidget {
     );
   }
 
-  ClipRRect _buildImageSection(Locale locale) {
+  ClipRRect _buildImageSection(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20.r),
       child: Stack(
@@ -103,20 +104,34 @@ class UnitDetailsScreen extends StatelessWidget {
             child: buildPropertyImage(unit.imageUrl),
           ),
           // exclusive listing tag and title overlay
-          _buildListingHeader(unit, locale),
+          _buildListingHeader(context, unit),
         ],
       ),
     );
   }
 
-  Row _buildTopActionbar(BuildContext context) {
+  Widget _buildTopActionbar(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildIconButton(Icons.arrow_back, onTap: () => context.pop()),
         Row(
           children: [
-            _buildIconButton(Icons.favorite_border),
+            _buildIconButton(
+              Icons.favorite_border,
+              onTap: () {
+                if (context.read<SessionCubit>().state
+                    is SessionAuthenticated) {
+                  final userId = context.read<SessionCubit>().currentUserId;
+                  // Toggle favorite
+                  userId != null
+                      ? context.read<FavoritesBloc>().add(
+                          ToggleFavorite(unitId: unit.id ?? "", userId: userId),
+                        )
+                      : null;
+                }
+              },
+            ),
             SizedBox(width: 10.w),
             _buildIconButton(Icons.share),
           ],
@@ -141,9 +156,7 @@ class UnitDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListingHeader(PropertyUnitEntity unit ,Locale locale) {
-         final name = locale == Locale.fromSubtags(languageCode: "ar") ? unit.arName : unit.enName;
-
+  Widget _buildListingHeader(BuildContext context, PropertyUnitEntity unit) {
     return Container(
       padding: EdgeInsets.all(16.r),
       width: double.infinity,
@@ -160,9 +173,7 @@ class UnitDetailsScreen extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: getListColor(
-                unit.categoryId?? "1",
-              ).withOpacity(0.2),
+              color: getListColor(unit.categoryId ?? "1").withOpacity(0.2),
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
@@ -176,7 +187,7 @@ class UnitDetailsScreen extends StatelessWidget {
           ),
           SizedBox(height: 6.h),
           Text(
-            name ?? "",
+            unit.name(context),
             style: TextStyle(
               fontSize: 24.sp,
               color: AppColors.textWhite,

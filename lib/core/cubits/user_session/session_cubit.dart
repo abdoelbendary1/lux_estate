@@ -24,6 +24,15 @@ class SessionCubit extends Cubit<SessionState> {
     });
   }
 
+  // Getter بيجيب الـ ID لو المستخدم مسجل دخول
+  String? get currentUserId {
+    final currentState = state;
+    if (currentState is SessionAuthenticated) {
+      return currentState.user.id;
+    }
+    return null;
+  }
+
   void updateSession(AuthEntity? user) {
     if (user != null) {
       emit(SessionAuthenticated(user));
