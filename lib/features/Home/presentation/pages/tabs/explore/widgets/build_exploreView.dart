@@ -7,6 +7,7 @@ import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/FullResidencesTab.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/entire_units/presentation/Widgets/home_appbar.dart';
 import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/features/shared_spaces/presentation/shared_units.dart';
+import 'package:lux_estate/features/Home/presentation/pages/tabs/explore/widgets/ad_section.dart';
 import 'package:lux_estate/generated/locale_keys.g.dart';
 
 class ExploreUIView extends StatelessWidget {
@@ -22,6 +23,8 @@ class ExploreUIView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HomeAppBar(),
+              LuxCarouselCard(),
+              AppSizes.spaceL.verticalSpace,
               _buildTabsLabel(context),
               Expanded(
                 child: TabBarView(

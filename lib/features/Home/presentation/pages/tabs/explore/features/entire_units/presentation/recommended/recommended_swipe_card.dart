@@ -21,7 +21,7 @@ class RecommendedSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         AspectRatio(
-          aspectRatio: 0.9,
+          aspectRatio: 1.2,
           child: BlocBuilder<RecommendedUnitsBloc, RecommendedUnitsState>(
             builder: (context, state) =>
                 AsyncViewBuilder<List<PropertyUnitEntity>>(

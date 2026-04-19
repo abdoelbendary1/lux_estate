@@ -32,7 +32,7 @@ class LoadedCards extends StatelessWidget {
 
   CarouselOptions _carouselOptions(BuildContext context) {
     return CarouselOptions(
-      aspectRatio: 0.9,
+      aspectRatio: 1.2,
       viewportFraction: 0.9,
       enlargeCenterPage: true,
       enlargeFactor: 0.2,

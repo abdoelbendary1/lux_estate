@@ -32,7 +32,15 @@ class MessagesTab extends StatelessWidget {
                 ),
               ),
             ),
-            SearchSection(hasFilter: false, hintText: "Search"),
+            Row(
+              children: [
+                Expanded(
+                  child: SearchSection(hasFilter: false, hintText: "Search"),
+                ),
+                AppSizes.spaceM.horizontalSpace,
+                Icon(Icons.tune, size: 24.sp, color: AppColors.primary),
+              ],
+            ),
             // _buildSearchBar(),
             Expanded(child: _buildChatList()),
           ],
