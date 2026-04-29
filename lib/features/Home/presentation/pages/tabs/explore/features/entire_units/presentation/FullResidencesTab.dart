@@ -30,11 +30,16 @@ class FullResidencesTab extends StatelessWidget {
           ),
         );
         context.read<NearbyUnitsBloc>().add(
-          LoadNearbyUnitsEvent(lat: '30.0570', lang: '31.3310', category: PropertyCategories.values.first),
+          LoadNearbyUnitsEvent(
+            lat: '30.0570',
+            lang: '31.3310',
+            category: PropertyCategories.values.first,
+          ),
         );
         await Future.delayed(const Duration(milliseconds: 800));
       },
       child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

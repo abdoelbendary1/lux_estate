@@ -19,19 +19,29 @@ class ExploreUIView extends StatelessWidget {
       length: 2,
       child: SafeArea(
         child: Scaffold(
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HomeAppBar(),
-              LuxCarouselCard(),
-              AppSizes.spaceL.verticalSpace,
-              _buildTabsLabel(context),
-              Expanded(
-                child: TabBarView(
-                  children: [FullResidencesTab(), SharedHousingTab()],
+          body: SingleChildScrollView(
+            // 1. The only scroll view
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HomeAppBar(),
+                LuxCarouselCard(),
+                AppSizes.spaceL.verticalSpace,
+                _buildTabsLabel(context),
+
+                // 2. We use a sized container because TabBarView
+                // needs a height to render inside a scroll view.
+                SizedBox(
+                  height: 1300
+                      .h, // Set this to the height of your tallest tab content
+                  child: TabBarView(
+                    physics:
+                        const NeverScrollableScrollPhysics(), // 3. Disable Tab swiping scroll
+                    children: [FullResidencesTab(), SharedHousingTab()],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -9,6 +9,7 @@ import 'package:lux_estate/core/cubits/user_session/session_cubit.dart';
 import 'package:lux_estate/core/di/injection.dart';
 import 'package:lux_estate/core/extentions/pick_lang.dart';
 import 'package:lux_estate/core/helpers/helpers.dart';
+import 'package:lux_estate/core/router/app_routes.dart';
 import 'package:lux_estate/core/theme/app_colors.dart';
 import 'package:lux_estate/core/theme/app_sizes.dart';
 import 'package:lux_estate/core/utils/app_button.dart';
@@ -82,7 +83,16 @@ class UnitDetailsScreen extends StatelessWidget {
                   _buildSectionTitle('Location & Neighborhood'),
                   AppSizes.spaceL.verticalSpace,
                   _buildMapWidget(),
+
                   // Add extra padding at the bottom so content isn't covered by bottom nav
+                  AppSizes.spaceL.verticalSpace,
+                  BuildAppButton(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.multiStepsName);
+                    },
+                    actionText: "Book unit",
+                    backgroundColor: AppColors.accentBlue,
+                  ),
                 ],
               ),
             ),

@@ -19,6 +19,8 @@ import 'package:lux_estate/features/auth/presentation/pages/register_page.dart';
 import 'package:lux_estate/features/search/presentation/bloc/search_bloc.dart';
 import 'package:lux_estate/features/search/presentation/pages/search_screen.dart';
 import 'package:lux_estate/features/show_unit_details/presentation/pages/unit_details.dart';
+import 'package:lux_estate/features/show_unit_details/presentation/widgets/multi_steps_page.dart';
+import 'package:lux_estate/features/show_unit_details/presentation/widgets/step_one_booking.dart';
 
 @singleton
 class AppRouter {
@@ -64,6 +66,14 @@ class AppRouter {
                     path: AppRoutes.detailsScreenPath,
                     name: AppRoutes.detailsScreenName,
                     parentNavigatorKey: _navigatorKey,
+                    routes: [
+                      GoRoute(
+                        path: AppRoutes.multiStepsPath,
+                        name: AppRoutes.multiStepsName,
+                        parentNavigatorKey: _navigatorKey,
+                        builder: (context, state) => MultiStepForm(),
+                      ),
+                    ],
 
                     ///By setting parentNavigatorKey: _navigatorKey,
                     ///you are telling the router:

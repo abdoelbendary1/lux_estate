@@ -13,6 +13,10 @@ class AppRoutes {
   static const String savedScreenName = 'saved';
   static const String recentlyAdedScreenName = 'recentlyAdded';
   static const String nearbyScreenName = 'nearby';
+  static const String multiStepsName = 'multiSteps';
+  static const String stepOneBookingName = 'stepOneBooking';
+  static const String stepTwoBookingName = 'stepTwoBooking';
+  static const String stepThreeBookingName = 'stepThreeBooking';
 
   // Paths (Use these for GoRoute path and redirects)
   static const String loginPath = '/login';
@@ -28,4 +32,8 @@ class AppRoutes {
   static const String recentlyAdedScreenPath = '/recentlyAdded';
   static const String nearbyScreenPath = '/nearby';
   static const String sharedScreenPath = '/shared';
+  static const String multiStepsPath = '/multiSteps';
+  static const String stepOneBookingPath = '/stepOneBooking';
+  static const String stepTwoBookingPath = '/stepTwoBooking';
+  static const String stepThreeBookingPath = '/stepThreeBooking';
 }
